@@ -1,0 +1,33 @@
+<section id="event-details-related-tags" class="animated fadeIn">
+    <table>
+        <thead>
+        <tr>
+            <th class="size-55"><%= __('Tag name') %></th>
+            <th class="size-35"><%= __('Status') %></th>
+            <th class="size-10"></th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr ng-if="view.tagSummary === undefined">
+                <td colspan="3" class="information">
+                    <%= __('Container has no tags') %>
+                </td>
+            </tr>
+            <tr
+                ng-repeat="tag in view.tagSummary"
+                ng-class="{'status-not-fired': !tag.resolved, 'status-disabled': tag.disableInDebugMode}"
+                ng-click="$state.go('events-log.details.related-tags.details', {id: tag.id})"
+            >
+                <td>{{ tag.name | limitTo : 22 }}{{ tag.name.length > 22 ? '...' : '' }}</td>
+                <td>
+                    <div class="status-pill">
+                        <span ng-if="tag.resolved && !tag.disableInDebugMode"><%= __('Fired') %></span>
+                        <span ng-if="!tag.resolved && !tag.disableInDebugMode"><%= __('Not fired') %></span>
+                        <span ng-if="tag.disableInDebugMode"><%= __('Disabled') %></span>
+                    </div>
+                </td>
+                <td class="size-10"><i class="icon-arrow-right"></i></td>
+            </tr>
+        </tbody>
+    </table>
+</section>

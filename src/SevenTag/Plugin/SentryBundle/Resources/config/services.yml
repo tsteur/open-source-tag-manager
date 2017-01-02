@@ -1,0 +1,10 @@
+services:
+    seven_tag_plugin_sentry.provider.sentry:
+        class: SevenTag\Plugin\SentryBundle\Provider\SentryProvider
+        arguments: ['%sentry_dsn%', @templating.engine.twig]
+
+    seven_tag_plugin_sentry.listener.sentry_asset_modify:
+        class: SevenTag\Plugin\SentryBundle\Listener\SentryAssetModifyListener
+        arguments: [@seven_tag_plugin_sentry.provider.sentry]
+        tags:
+            - { name: kernel.event_listener, event: asset.event.scripts_warmed_up, method: appendSentryTrackingCode }

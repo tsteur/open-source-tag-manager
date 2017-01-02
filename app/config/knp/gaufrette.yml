@@ -1,0 +1,17 @@
+knp_gaufrette:
+    adapters:
+        container_library:
+            local:
+                directory: %seventag_javascript_cache_dir%
+                create: true
+        container_library_mock:
+            local:
+                directory: '%kernel.root_dir%/../tests'
+                create: true
+    filesystems:
+        container_library:
+            adapter: container_library
+            alias: gaufrette.container_library
+        container_library_mock:
+            adapter: container_library_mock
+            alias: gaufrette.container_library_mock

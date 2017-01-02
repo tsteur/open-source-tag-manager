@@ -1,0 +1,44 @@
+services:
+    seven_tag_app.versionable.vesionable_param_converter:
+        class: SevenTag\Api\AppBundle\Versionable\VersionableParamConverter
+        tags:
+            - { name: request.param_converter, converter: versionable_converter }
+        arguments:
+            - @?doctrine
+
+    seven_tag_app.versionable.form.type.accessible:
+        class: SevenTag\Api\AppBundle\Versionable\Form\Type\AccessibleType
+        parent: form.type.entity
+        calls:
+            - [ setSubscriber, [@seven_tag_app.versionable.subscriber.accessible_form]]
+        tags:
+            - { name: form.type, alias: accessible }
+
+    seven_tag_app.version_manager_handler.abstract:
+          class: SevenTag\Api\AppBundle\Versionable\VersionManager\Handler\AbstractHandler
+          abstract: true
+          calls:
+            - [ setCopyManager, [@seven_tag_app.copy_manager] ]
+            - [ setDeepPersister, [@seven_tag_app.deep_persister] ]
+            - [ setEntityManager, [@doctrine.orm.entity_manager] ]
+
+    seven_tag_app.version_manager_handler.publish_handler:
+          class: SevenTag\Api\AppBundle\Versionable\VersionManager\Handler\PublishHandler
+          parent: seven_tag_app.version_manager_handler.abstract
+
+    seven_tag_app.version_manager_handler.restore_handler:
+          class: SevenTag\Api\AppBundle\Versionable\VersionManager\Handler\RestoreHandler
+          parent: seven_tag_app.version_manager_handler.abstract
+
+    seven_tag_app.copy_manager:
+        class: SevenTag\Api\AppBundle\Versionable\CopyManager\CopyManager
+
+    seven_tag_app.deep_persister:
+        class: SevenTag\Api\AppBundle\Versionable\DeepPersister\DeepPersister
+        arguments: [@doctrine.orm.entity_manager]
+
+    seven_tag_app.version_manager:
+        class: SevenTag\Api\AppBundle\Versionable\VersionManager\VersionManager
+        arguments:
+            - @seven_tag_app.version_manager_handler.publish_handler
+            - @seven_tag_app.version_manager_handler.restore_handler

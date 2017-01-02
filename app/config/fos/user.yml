@@ -1,0 +1,12 @@
+fos_user:
+    db_driver: orm
+    firewall_name: api
+    user_class: SevenTag\Api\UserBundle\Entity\User
+    group:
+        group_class: SevenTag\Api\UserBundle\Entity\Group
+
+    service:
+        mailer: seventag.user.mailer.mailer
+    from_email:
+        address: %mailer_sender%
+        sender_name: 7tag

@@ -1,0 +1,128 @@
+$navbar-height: 60px;
+$navbar-background: #2e9354;
+$navbar-padding: 20px;
+$navbar-color: #fff;
+
+$navbar-slide-button-size: $navbar-height;
+$navbar-slide-button-background: #287a47;
+$navbar-slide-button-color: $navbar-color;
+
+$navbar-close-button-size: 30px;
+$navbar-close-button-background: $navbar-slide-button-background;
+
+body:not(.mobile) #navbar {
+    margin-left: -1px;
+}
+
+.separator {
+    border-left: 1px solid #000;
+    height: 45%;
+}
+
+.minimize #navbar {
+  margin-bottom: 0 !important;
+}
+
+#navbar {
+    @extend .navbar;
+    @extend .navbar-default;
+    @extend .navbar-static-top;
+    height: $navbar-height;
+    background-color: $navbar-background;
+    border-width: 0px;
+
+    #brand-minimize {
+        float: left;
+        padding: 15px 15px 0px;
+        font-size: 28px;
+        color: #fff;
+        position: relative;
+        margin-left: 65px;
+        top: 0;
+    }
+}
+
+#navbar-brand {
+    @extend .navbar-brand;
+
+    font-size: 28px;
+    padding-left: $navbar-slide-button-size + $navbar-padding;
+    height: $navbar-height;
+    padding-top: 16px;
+    & > i {
+        color: $navbar-color;
+    }
+}
+
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px)
+  and (-webkit-min-device-pixel-ratio: 2)
+  and (orientation: portrait) {
+    #navbar-brand {
+      padding-top: 17px;
+    }
+}
+
+#navbar-slide-button {
+    height: $navbar-slide-button-size;
+    float: left;
+    position: absolute;
+    width: $navbar-slide-button-size;
+    color: $navbar-slide-button-color;
+    background: $navbar-slide-button-background;
+    padding: 13px 18px;
+    font-size: 26px;
+    left: 0;
+
+    i.ng-enter {
+        animation: fadeIn 1s;
+    }
+
+    &:hover {
+        background-color: darken($navbar-slide-button-background, 5%);
+    }
+}
+
+#navbar-container-separator {
+    @extend .separator;
+    margin: 18px 0px;
+    float: left;
+    border-color: $navbar-slide-button-background;
+}
+
+#navbar-container-name {
+    color: $navbar-color;
+    margin: 20px 15px 20px 10px;
+    font-size: 14px;
+    float: left;
+    width: 90px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+@media (min-width: 400px) {
+    #navbar-container-name {
+        width: 120px;
+    }
+}
+
+#navbar-close-button {
+    margin: 15px 15px 15px 0px;
+    padding: 4px 5px;
+    border-radius: 2px;
+    color: $navbar-color;
+    height: $navbar-close-button-size;
+    width: $navbar-close-button-size;
+    float: right;
+    background-color: $navbar-close-button-background;
+
+    & > i {
+        font-size: 21px;
+    }
+
+    &:hover {
+        background-color: darken($navbar-slide-button-background, 5%);
+    }
+}

@@ -1,0 +1,61 @@
+include ../../../views/_mixins.jade
+
+extends ../../../views/_view-list.jade
+
+block vars
+    - var ENTITY_NAME = 'Integration';
+
+block header
+    i.icon-integrations
+    strong(translate='Integrations')
+
+block actions
+    +button('primary')#integration-list-create-link(
+        href,
+        ui-sref="integrationCreate()",
+        class="stg-link-btn"
+    )
+        span.plus +
+        strong(translate='Add an integration')
+
+block content
+    - var INTEGRATION_ID = 'integration-list';
+
+    +table('view.tableParams', INTEGRATION_ID, INTEGRATION_ID + '-st-header.html')
+        tbody
+            tr(ng-repeat="integration in $data", id="#{INTEGRATION_ID}-row-{{ $index }}" ng-init="showMenu = false")
+                td.col-md-(
+                    sortable="name",
+                    id="#{INTEGRATION_ID}-row-{{ $index }}-user"
+                )
+                    a(ui-sref="integrationEdit({integrationId: integration.id})", ui-sref-opts='{id: {{ integration.id }}}')
+                        span(title="{{ integration.name }}") {{ integration.name | limitTo : 43 }}
+                td.col-md-2(
+                    sortable="createdAt",
+                    id="#{INTEGRATION_ID}-row-{{ $index }}-createdAt"
+                )  {{ integration.createdAt | tmDate }}
+                td.col-md-1.actions.context-menu-actions(
+                    id="#{INTEGRATION_ID}-row-{{ $index }}-action",
+                    ng-class="{active: showMenu}"
+                )
+                    ul.list-inline.users-actions(ng-if="showMenu")
+                        li
+                            a(
+                            href="",
+                            ui-sref="integrationEdit({integrationId: integration.id})",
+                            id="#{INTEGRATION_ID}-row-{{ $index }}-edit"
+                            )
+                                i.icon-edit
+                                span(translate='Edit')
+                        li
+                            a(
+                            href="",
+                            cc-confirm="view.removeIntegration(integration)",
+                            id="#{INTEGRATION_ID}-row-{{ $index }}-delete"
+                            )
+                                i.icon-delete
+                                span(translate='Delete')
+                    a.dots(href="", ng-click="showMenu = !showMenu")
+                        i.icon-dots
+
+

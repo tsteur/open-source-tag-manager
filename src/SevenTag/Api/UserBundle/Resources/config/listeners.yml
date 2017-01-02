@@ -1,0 +1,6 @@
+services:
+  seven_tag_user.listener.reset_password_request_listener:
+    class: SevenTag\Api\UserBundle\Listener\ResetPasswordRequestListener
+    arguments: [@fos_user.user_manager, @translator, @fos_user.util.token_generator, @seventag.user.mailer.mailer, %fos_user.resetting.token_ttl%]
+    tags:
+        - { name: kernel.event_listener, event: seven_tag_user.reset_password_request_event, method: onResetPasswordRequest }

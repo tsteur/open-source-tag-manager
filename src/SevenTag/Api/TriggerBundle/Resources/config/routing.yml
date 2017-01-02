@@ -1,0 +1,9 @@
+triggers_api:
+    resource: @SevenTagTriggerBundle/Controller/TriggerRestController.php
+    type:     rest
+    prefix:   /api
+
+conditions_api:
+    resource: @SevenTagTriggerBundle/Controller/ConditionRestController.php
+    type:     rest
+    prefix:   /api

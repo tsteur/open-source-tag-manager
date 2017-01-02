@@ -1,0 +1,8 @@
+{
+  "name": "seventag_plugin_visual_website_optimizer_custom_template",
+  "version": "1.0.0",
+  "assets-js": [
+    {"path": "js/stgVisualWebsiteOptimizer.js", "target": "bottom", "externalPath": false}
+  ],
+  "containerjs-configs": []
+}

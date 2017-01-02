@@ -1,0 +1,263 @@
+/**
+ * Copyright (C) 2015 Digimedia Sp. z.o.o. d/b/a Clearcode
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+$table-border-radius: 2px;
+$table-rows-spacing: 10px;
+$badge-color-draft: #f9b016;
+$badge-color-published: $brand-primary;
+$badge-color-never-published: #f0752b;
+
+%table-cell {
+  padding: $table-cell-padding $table-cell-padding 0 $table-cell-padding;
+  a:hover {
+    text-decoration: none;
+  }
+
+  .list-inline {
+    i[class^=icon-] {
+      position: relative;
+      margin-right: 5px;
+      top: 1px;
+    }
+  }
+}
+
+%table-cell-actions-behaviour {
+  &.actions {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: 10px 10px 10px 0;
+    &.actions-content {
+      .list-inline li {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+      padding: 15px 32px 0;
+      i[class^=icon-] {
+        position: relative;
+        margin-right: 5px;
+        top: 1px;
+        font-size: 16px;
+      }
+      a:hover {
+        color: $link-color;
+        text-decoration: none;
+      }
+    }
+    a.dots {
+      display: block;
+      height: 33px;
+      border-left: 1px solid $table-border-color;
+      padding: 10px;
+      text-align: center;
+    }
+    &:hover, &.active {
+      background-color: #ededed;
+      a {
+        color: $text-color;
+      }
+    }
+    &.disabled {
+      background-color: white;
+      cursor: default;
+
+      a {
+          border-left: none;
+          cursor: default;
+      }
+    }
+  }
+}
+
+%ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-ellipsis {
+  max-width: 0;
+  overflow: hidden;
+  @extend %ellipsis;
+}
+
+.table.table-blocks {
+  border-collapse: separate;
+  border-spacing: 0 $table-rows-spacing;
+  thead > tr > th {
+    border-bottom: 0px;
+    padding: 0 18px;
+  }
+//  i[class^=icon-] {
+//    position: relative;
+//    margin-right: 10px;
+//  }
+  tbody > tr > td {
+
+    @extend %table-cell;
+    @extend %table-cell-actions-behaviour;
+
+    border-top: 1px solid $table-border-color;
+    border-bottom: 1px solid $table-border-color;
+    &:first-child {
+      border-left: 1px solid $table-border-color;
+      border-top-left-radius: $table-border-radius;
+      border-bottom-left-radius: $table-border-radius;
+    }
+    &:last-child {
+      border-right: 1px solid $table-border-color;
+      border-top-right-radius: $table-border-radius;
+      border-bottom-right-radius: $table-border-radius;
+    }
+    &.ellipsis {
+      max-width: 0;
+      @extend %ellipsis;
+    }
+  }
+}
+
+.div-table {
+  min-width: 470px;
+
+  .div-table-header {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: $table-rows-spacing;
+
+    color: $text-color;
+    font-weight: bold;
+
+    > div {
+      @extend %table-cell;
+    }
+  }
+
+  .div-table-row {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: $table-rows-spacing;
+    border: 1px solid $table-border-color;
+    border-radius: $table-border-radius;
+  }
+
+  .div-table-cell {
+    @extend %table-cell;
+    @extend %table-cell-actions-behaviour;
+
+    &.ellipsis {
+      @extend %ellipsis;
+    }
+  }
+}
+
+.existing-triggers, .stg-table {
+  font-size: 12px;
+
+  td {
+    padding-top: 9px !important;
+    padding-bottom: 9px !important;
+  }
+
+  .cc-checkbox {
+    margin-left: 0;
+  }
+
+  .existing-triggers-col1, .stg-col-1 {
+    width: 40px;
+  }
+  .existing-triggers-col2, .stg-col-2 {
+    width: 500px;
+  }
+  .existing-triggers-col3, .stg-col-3 {
+    width: 434px;
+  }
+  .stg-col-4 {
+    width: 150px;
+  }
+}
+
+.container-permissions {
+  width: 100%;
+  th {
+    border-bottom: 2px solid $table-border-color;
+  }
+  td {
+    border-top: 1px solid $table-border-color;
+  }
+}
+
+td:not(.active).actions:hover, .icon-dots:hover {
+    cursor: pointer;
+}
+
+.td-inline {
+  display:inline;
+}
+
+.stg-status-badge {
+  color:white;
+  padding: 2px 5px;
+  border: 1px solid;
+  font-size: 11px;
+  border-radius: 3px;
+  margin-left: 10px;
+
+  &.stg-status-badge-published {
+    border-color: $brand-primary;
+    background-color: $brand-primary;
+  }
+
+  &.stg-status-badge-draft {
+    border-color: $badge-color-draft;
+    background-color: $badge-color-draft;
+  }
+
+  &.stg-status-badge-never-published {
+    border-color: $badge-color-never-published;
+    background-color: $badge-color-never-published;
+  }
+}
+
+@media (max-width: 993px) {
+  .stg-status-badge {
+    display: none;
+  }
+}
+
+$non-standard-grid-columns:
+ "0-5" 0.5,
+ "1-5" 1.5,
+ "2-5" 2.5,
+ "3-5" 3.5;
+
+@each $col-data in $non-standard-grid-columns {
+  .col-xs-#{nth($col-data, 1)} {
+      @include make-xs-column(nth($col-data, 2));
+  }
+  .col-sm-#{nth($col-data, 1)} {
+      @include make-sm-column(nth($col-data, 2));
+  }
+  .col-md-#{nth($col-data, 1)} {
+      @include make-md-column(nth($col-data, 2));
+  }
+  .col-lg-#{nth($col-data, 1)} {
+      @include make-lg-column(nth($col-data, 2));
+  }
+}

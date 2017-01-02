@@ -1,0 +1,13 @@
+include ../../../views/_mixins.jade
+
+.alert.alert-info.alert-empty.alert-access-denied
+    h2.text-center
+        strong(translate="We're sorry")
+    p(translate="You don't have permission to access this page").text-center
+    p.text-center.action
+        +button("primary")#access-denied-return(
+            href,
+            ui-sref="container",
+            class="stg-link-btn",
+        )
+            strong(translate="Return to homepage")

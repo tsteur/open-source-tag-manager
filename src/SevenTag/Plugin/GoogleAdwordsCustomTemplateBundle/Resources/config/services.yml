@@ -1,0 +1,10 @@
+imports:
+    - { resource: 'forms.yml' }
+
+services:
+    seven_tag_plugin_google_adwords_custom_template.template_provider.google_adwords:
+        class: SevenTag\Plugin\GoogleAdwordsCustomTemplateBundle\Template\GoogleAdwordsProvider
+        parent: seven_tag_tag.templating_provider
+        public: false
+        tags:
+            - { name: seven_tag_tag_template_provider }

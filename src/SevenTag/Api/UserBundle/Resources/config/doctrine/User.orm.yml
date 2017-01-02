@@ -1,0 +1,47 @@
+SevenTag\Api\UserBundle\Entity\User:
+    type: entity
+    table: user
+    repositoryClass: SevenTag\Api\UserBundle\Entity\UserRepository
+    manyToMany:
+        groups:
+            targetEntity: SevenTag\Api\UserBundle\Entity\Group
+            joinTable:
+                name: user_group
+                joinColumns:
+                    user_id:
+                        referencedColumnName: id
+                        onUpdate: CASCADE
+                inverseJoinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onUpdate: CASCADE
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        firstName:
+            type: text
+            nullable: true
+        lastName:
+            type: text
+            nullable: true
+        language:
+            type: text
+            length: 10
+            nullable: true
+        createdAt:
+          type: datetime
+          gedmo:
+            timestampable:
+              on: create
+        updatedAt:
+          type: datetime
+          gedmo:
+            timestampable:
+              on: update
+    attributeOverride:
+        password:
+            nullable: true
+    lifecycleCallbacks: {  }

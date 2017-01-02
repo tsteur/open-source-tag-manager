@@ -1,0 +1,373 @@
+/**
+ * Copyright (C) 2015 Digimedia Sp. z.o.o. d/b/a Clearcode
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+$navbar-nav-pill-border-color: #287a47;
+$navbar-nav-pill-divider-color: $navbar-nav-pill-border-color;
+$publish-btn-background: #F9B915;
+$navbar-debug-vertical-padding: 10px;
+$navbar-debug-height: 53px;
+$navbar-buttons-border-radius: 2px;
+
+%noshadow {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+%flicker-fix {
+  -webkit-font-smoothing:antialiased;
+}
+
+.navbar-not-logged {
+  height: $navbar-not-logged-height;
+  .navbar-header {
+    width: 100%;
+    .navbar-brand {
+      display: block;
+      width: 225px;
+      margin: 45px auto 0 !important;
+      padding: 0 !important;
+      float: none;
+      text-align: center;
+      font-size: $font-size-h1;
+      font-weight: bold;
+      img {
+        display: block;
+        margin: auto;
+        width: auto;
+      }
+    }
+  }
+}
+
+.navbar-brand {
+  font-size: 23px;
+  font-weight: bold;
+  width: $sidebar-width;
+  padding: 17px 20px 10px 25px;
+  img {
+    width: 100%;
+  }
+}
+
+#top{
+  .container-fluid{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+.navbar-header {
+  padding-left: $navbar-padding-horizontal;
+}
+
+#top-version-publish{
+  position: static !important;
+  float:none !important;
+}
+
+#navbar-debug{
+  background-color: $navbar-debug-background;
+  
+  .navbar-nav {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    border-bottom: 1px solid $navbar-border-color;
+    height: 0px;
+    transition: height $navbar-debug-shown-animation-length linear;
+    
+    &.shown{
+      height: $navbar-debug-height;
+      .form-group {
+        opacity: 1;
+      }
+    }
+  }
+  
+  .form-group {
+    opacity: 0;
+    transition: opacity 0s linear $navbar-debug-shown-animation-length;
+  }
+  
+  .navbar-form{
+    margin-top: $navbar-debug-vertical-padding;
+    margin-bottom: $navbar-debug-vertical-padding;
+  }
+  
+  .navbar-debug-item {
+    float: none;
+    display: inline-block;
+    span{
+      @extend %flicker-fix;
+    }
+  }
+  
+  .btn{
+    margin-left: 10px;
+    @extend %flicker-fix;
+  }
+}
+
+
+
+.navbar-nav {
+  margin-left: 10px;
+  
+  .btn-primary {
+    color: #fff;
+    border-color: #226c3e;
+    &:hover, &:active {
+      background-color: #226c3e;
+      color: #fff;
+    }
+  }
+  
+  .btn-default {
+    color: $btn-default-color;
+    border-color: $btn-default-bg;
+    &[disabled]:hover, &[disabled]:active {
+      background-color: #666;
+      border-color: #666;
+    }
+    &:hover, &:active {
+      background-color: #404040;
+      color: $btn-default-color;
+    }
+  }
+  
+  .btn-publish {
+    background: $publish-btn-background;
+    border-color: darken($publish-btn-background, 10%);
+    padding: 8px 18px;
+    border-radius: $navbar-buttons-border-radius !important;
+
+    &:hover, &:active {
+      background-color: darken($publish-btn-background, 10%);
+    }
+    i.icon-publish {
+      color: black;
+    }
+    span {
+      color: black;
+      margin-left: 12px;
+      font-weight: 600;
+    }
+  }
+
+  [class^=icon-] {
+    font-size: 16px;
+    margin-right: 5px;
+    position: relative;
+    top: 3px;
+  }
+  .version-info {
+    color: white;
+    margin-top: 10px;
+    padding-top: 17px;
+    @extend %flicker-fix;
+  }
+
+  .top-container-name {
+    width: 265px;
+    text-align: left;
+    padding-top: 10px;
+    cursor: auto;
+    @extend %noshadow;
+
+    border-bottom-right-radius: $navbar-buttons-border-radius;
+    border-top-right-radius: $navbar-buttons-border-radius;
+    strong {
+        padding-right: 0px;
+        margin-right: 0px;
+    }
+    span {
+        @extend %flicker-fix;
+        display: inline-block;
+        overflow: hidden;
+    }
+  }
+
+  .navbar-containers {
+    color:white;
+    margin-right: 10px;
+    background-color: $navbar-dropdown-bg;
+    border-radius: $navbar-buttons-border-radius;
+    
+    &#top-menu-icon {
+      width: 50px;
+      padding-top: 8px;
+    }
+    
+    [class^=icon-] {
+      color: white;
+      font-size: 16px;
+      padding-left: 3px;
+    }
+    
+    a, div {
+      height: 100%;
+
+      &:not(:first-child):before {
+            content: "|";
+            position: relative;
+            left: -12px;
+            top: -5px;
+            color: $navbar-dropdown-bg-hover;
+
+            _::-webkit-:not(:root:root), & {
+              top: 0px;
+            }
+        }
+
+      &.btn-primary {
+        background-color: transparent;
+        border: none;
+      }
+    }
+    
+    a:hover {
+      color:white;
+      &.btn-primary:first-child {
+        background-color: $navbar-dropdown-bg-hover;
+      }
+    }
+
+  }
+
+  .user-dropdown {
+    width: 300px;
+    margin-right: $navbar-padding-horizontal;
+    & > a {
+      background-color: $navbar-dropdown-bg;
+    }
+
+    .user-profile {
+        text-align: left;
+        width: 250px;
+        display:inline-block;
+        padding-top: 10px;
+
+        _::-webkit-:not(:root:root), & {
+          padding-top: 8px;
+        }
+
+        i {
+            top:-2px;
+
+          _::-webkit-:not(:root:root), & {
+            top:2px
+          }
+        }
+        
+        span {
+          @extend %flicker-fix;
+        }
+    }
+
+    .user-menu {
+        width: 50px;
+    }
+    .user-dropdown-menu {
+        margin-top: -1px;
+        width: 300px;
+        padding: 0px;
+
+        li {
+            &:hover {
+                background-color: #ededed;
+            }
+        }
+
+        .user-menu-item {
+            padding: 13px 0px;
+            color: #414141;
+            margin: 0px 25px;
+            cursor:pointer;
+            border-top: 1px solid #ededed;
+
+            &:hover {
+                background-color: #ededed;
+            }
+        }
+    }
+  }
+  
+}
+
+
+.nav .open>a, .nav .open>a:hover, .nav .open>a:focus {
+    background-color: #19512e;
+}
+
+.version-info {
+    font-size: 0.85em;
+    width: 100%;
+    #top-version-status {
+        padding: 0px;
+    }
+}
+
+.cut-text {
+    display:inline-block;
+    width: 80%;
+    white-space: nowrap;
+    overflow:hidden !important;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 880px) {
+    .navbar-nav .version-info {
+        display: none;
+    }
+
+    #top-website-visit {
+        display: none;
+    }
+}
+
+@media (max-width: 1200px) {
+
+    .navbar-nav .navbar-containers {
+        width: 206px;
+
+        .top-container-name {
+            width: 156px;
+        }
+
+    }
+    .navbar-nav .user-dropdown .user-profile {
+        width: 42px;
+    }
+    .navbar-nav .user-dropdown {
+        width: 97px;
+        .dropdown-menu {
+            width: 200px;
+            left: -108px;
+        }
+        .cut-text {
+            display: none;
+        }
+        i.icon-user {
+            top: 2px;
+        }
+    }
+    .navbar-nav {
+        margin-left: 20px;
+    }
+}
+

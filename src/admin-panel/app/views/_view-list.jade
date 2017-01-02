@@ -1,0 +1,17 @@
+block vars
+
+.row
+    cc-breadcrumb
+.row
+    h2.page-header
+        block header
+        .pull-right(ng-if="!view.tableParams.settings().$loading && view.tableParams.total() > 0")
+            block actions
+    .alert.alert-info.alert-empty(ng-if="!view.tableParams.settings().$loading && view.tableParams.total() === 0")
+        h2.text-center
+            strong(translate="Your list is empty")
+        p.text-center(ng-if="(currentContainer.$container.hasPermission('edit'))")
+            span(translate="To add a new item click the button below.")
+        p.text-center.action
+            block actions
+    block content

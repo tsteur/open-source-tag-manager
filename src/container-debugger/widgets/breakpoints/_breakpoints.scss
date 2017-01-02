@@ -1,0 +1,79 @@
+$breakpoints-background: #fff;
+$breakpoints-border-color: $body-border-color;
+
+$toggle-background: #666;
+$toggle-active-background: #2e9354;
+$toggle-thumb-size: 25px;
+$toggle-thumb-background: #fff;
+
+$breakpoints-navbar-height: 60px;
+
+.stg-toggle{
+    display: none;
+    // add default box-sizing for this scope
+    &, &:after, &:before,
+    & *, & *:after, & *:before,
+    & + .stg-toggle-btn{
+        box-sizing: border-box;
+        &::selection{
+            background: none;
+        }
+    }
+    + .stg-toggle-btn{
+        outline: 0;
+        display: block;
+        width: 4em;
+        height: 2em;
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+        background: $toggle-background;
+        border-radius: 2em;
+        padding: 2px;
+        transition: all .4s ease;
+        &:after, &:before{
+            position: relative;
+            display: block;
+            content: "";
+            width: 50%;
+            height: 100%;
+            border-radius: 50%;
+            background: #fff;
+            transition: all .2s ease;
+        }
+        &:after{
+            left: 0;
+        }
+        &:before{
+            display: none;
+        }
+    }
+    &:checked{
+        + .stg-toggle-btn{
+            background: $toggle-active-background;
+            &:after{
+                left: 50%;
+            }
+        }
+    }
+}
+
+#breakpoints {
+    @extend .navbar;
+    @extend .navbar-default;
+    @extend .navbar-fixed-bottom;
+    background-color: $breakpoints-background;
+    border-top: 1px solid $breakpoints-border-color;
+    border-left: 1px solid $breakpoints-border-color;
+    box-shadow: 0 0 10px $breakpoints-border-color;
+}
+
+#breakpoints-title {
+    @extend .navbar-brand;
+    padding: 20px 30px;
+}
+
+#breakpoints-toggle {
+    float: right;
+    margin: 15px;
+}

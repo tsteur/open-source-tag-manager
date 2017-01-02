@@ -1,0 +1,20 @@
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        path:     "%database_path%"
+        types:
+            datetime: SevenTag\Api\AppBundle\DBAL\Types\UTCDateTimeType
+
+    orm:
+        entity_managers:
+            default:
+                auto_mapping: true
+                filters: ~
+        auto_generate_proxy_classes: "%kernel.debug%"

@@ -1,0 +1,30 @@
+services:
+    seven_tag.trigger_type.page_view_type:
+        class: SevenTag\Api\TriggerBundle\TriggerType\Type\PageViewType
+        tags:
+            - { name: seven_tag_trigger.trigger_type }
+
+    seven_tag.trigger_type.page_dom_ready:
+        class: SevenTag\Api\TriggerBundle\TriggerType\Type\DOMReadyType
+        tags:
+            - { name: seven_tag_trigger.trigger_type }
+
+    seven_tag.trigger_type.page_load_type:
+        class: SevenTag\Api\TriggerBundle\TriggerType\Type\PageLoadType
+        tags:
+            - { name: seven_tag_trigger.trigger_type }
+
+    seven_tag.trigger_type.click_type:
+        class: SevenTag\Api\TriggerBundle\TriggerType\Type\ClickType
+        tags:
+            - { name: seven_tag_trigger.trigger_type }
+
+    seven_tag.trigger_type.form_submission_type:
+        class: SevenTag\Api\TriggerBundle\TriggerType\Type\FormSubmissionType
+        tags:
+            - { name: seven_tag_trigger.trigger_type }
+
+    seven_tag.trigger_type.event_type:
+        class: SevenTag\Api\TriggerBundle\TriggerType\Type\EventType
+        tags:
+            - { name: seven_tag_trigger.trigger_type }

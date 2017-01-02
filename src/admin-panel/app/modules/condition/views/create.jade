@@ -1,0 +1,76 @@
+include ../../../views/mixins/_bootstrap
+
+- var FORM_NAME = TRIGGER_FORM_NAME;
+
+.form-group(
+    ng-switch="triggerForm.trigger.type",
+    ng-show="triggerForm.trigger.conditions.length === 0",
+    ng-init="view.validateTriggers = false;"
+)
+    .form-group
+        label(translate="Fire tag on all pages", ng-switch-when="0", style="color:#2e9354").control-label
+        label(translate="Fire tag on all clicks", ng-switch-when="1", style="color:#2e9354").control-label
+        label(translate="Fire tag on all sending forms", ng-switch-when="3", style="color:#2e9354").control-label
+        label(translate="or" ng-if="currentContainer.$container.hasPermission('edit')").control-label
+        +button(translate="Add a condition(s)", ng-click="triggerForm.addCondition()" ng-if="currentContainer.$container.hasPermission('edit')")#condition-add-button
+
+.form-inline.bottom-space.stg-condition(
+    ng-repeat="condition in triggerForm.trigger.conditions",
+    ng-class="{'has-error': (#{FORM_NAME}['conditionValue[{{$index}}]'].$dirty && #{FORM_NAME}['conditionValue[{{$index}}]'].$invalid) || (#{FORM_NAME}['conditionValue[{{$index}}]'].$invalid && view.validateTriggers)}",
+    ng-init="view.conditionLength = triggerForm.trigger.conditions.length"
+)
+    .form-group
+        .width-180
+            select.form-control(
+                ng-model="condition.variable",
+                cc-select,
+                ng-options="variable.type as variable.name for variable in triggerForm.variables",
+                id="condition-form-{{$index}}-select-variable",
+                ng-click="setActions(condition.variable)",
+                cc-select-options="triggerForm.variables",
+                cc-select-value="name",
+                cc-select-label="name",
+                ng-if="!triggerForm.isTypeRequired(condition.variable) && currentContainer.$container.hasPermission('edit')"
+            )
+            .control-label.required-variable(ng-if="triggerForm.isTypeRequired(condition.variable) || !currentContainer.$container.hasPermission('edit')") {{ triggerForm.getVariableName(condition.variable) }}
+    .form-group
+        .width-180
+            select.form-control(
+                ng-model="condition.condition",
+                cc-select,
+                ng-options="condition.type as condition.name for condition in triggerForm.actions"
+                id="condition-form-{{$index}}-select-condition",
+                cc-select-options="triggerForm.actions",
+                cc-select-value="type",
+                cc-select-label="name",
+                ng-if="currentContainer.$container.hasPermission('edit')"
+            )
+            .control-label.required-variable(ng-if="!currentContainer.$container.hasPermission('edit')") {{ triggerForm.getConditionName(condition.condition) }}
+    .form-group
+        input.form-control.width-180(
+            ng-model="condition.value",
+            name="conditionValue[{{$index}}]",
+            id="condition-form-{{$index}}-input-value",
+            required,
+            ng-disabled="!currentContainer.$container.hasPermission('edit')"
+        )
+    .form-group
+        button(
+            class="btn btn-default btn-action",
+            ng-click="view.conditionLength = view.conditionLength-1; triggerForm.trigger.removeCondition($index);",
+            id="condition-form-{{$index}}-remove-button",
+            ng-if="!triggerForm.isTypeRequired(condition.variable) && currentContainer.$container.hasPermission('edit')"
+        ) -
+    .form-group
+        button(
+            class="btn btn-default btn-action",
+            ng-show="$last",
+            ng-click="triggerForm.addCondition()",
+            id="condition-form-{{$index}}-add-button"
+            ng-if="currentContainer.$container.hasPermission('edit')"
+        ) +
+    .row
+        .col-lg-8(
+            ng-show="(#{FORM_NAME}['conditionValue[{{$index}}]'].$invalid && #{FORM_NAME}['conditionValue[{{$index}}]'].$dirty) || (#{FORM_NAME}['conditionValue[{{$index}}]'].$invalid && view.validateTriggers)"
+        )
+            p(translate="Required").error

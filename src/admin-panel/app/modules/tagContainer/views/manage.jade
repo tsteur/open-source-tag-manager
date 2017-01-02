@@ -1,0 +1,102 @@
+include ../../../views/_mixins.jade
+
+extends ../../../views/_view-list-filterable.jade
+
+block vars
+    - var ENTITY_NAME = 'Container';
+
+block header
+    i.icon-container
+    strong(translate="Containers")
+    cc-help(
+        placement="right"
+        content="{{'Create a container and manage all your tags here. Just paste the Container code into your website’s code, set the triggers, and save your time.'|translate}}",
+    )
+
+block actions
+    +button('primary')#container-list-create-link(
+        href,
+        ui-sref="containerCreate()",
+        class="stg-link-btn",
+        ng-if="security.hasRole('ROLE_CONTAINERS_CREATE')",
+        ng-disabled="view.tableParams.settings().$loading"
+    )
+        span.plus +
+        strong(translate="Add a container")
+
+block content-header
+    form.form-horizontal.container-search-form(autocomplete="off")
+        .row
+            .col-xs-4.form-group.has-feedback-both
+                input.form-control#contanier-search-by-name-query(
+                    type="text",
+                    ng-model="view.currentFilterQuery",
+                    name="containers-filter-query",
+                    placeholder='{{"Search for containers"|translate}}',
+                    ng-keyup="view.searchDebounced()",
+                    autocomplete="off"
+                )
+                i.icon-close.form-control-feedback.container-search-reset(
+                    ng-if="view.currentFilterQuery.length > 0",
+                    ng-click="view.resetSearchQuery()"
+                )
+                i.icon-debug.form-control-feedback.form-control-feedback-left
+            span.col-xs-1(ng-if="view.tableParams.settings().$loading && view.showSearchLoader()")
+                img.loader-spinner(src="app/images/loader.svg")
+block content
+    - var CONTAINER_ID = 'container-list';
+
+    +table('view.tableParams', CONTAINER_ID, CONTAINER_ID + '-st-header.html')
+        tbody
+            tr(ng-repeat="container in $data", id="#{CONTAINER_ID}-row-{{ $index }}" ng-init="showMenu = false")
+                td.col-md-5.td-inline(
+                    sortable="name",
+                    id="#{CONTAINER_ID}-row-{{ $index }}-name"
+                )
+                    div
+                        a.stg-container-name(ui-sref="tags({containerId: container.id})", ui-sref-opts='{id: {{ container.id }}}', title="{{ container.name }}")
+                            | {{ container.name | limitTo : 30 }}{{ container.name.length > 30 ? '...' : '' }}
+                        span.stg-status-badge(ng-class="view.getPublishedStatus(container).class")
+                            | {{ view.getPublishedStatus(container).name |translate }}
+                td.col-md-2(
+                        sortable="permissions",
+                        id="#{CONTAINER_ID}-row-{{ $index }}-permissions"
+                )  {{ container.getPermission()|translate }}
+                td.col-md-2(
+                    sortable="id",
+                    id="#{CONTAINER_ID}-row-{{ $index }}-id"
+                )  {{ container.id }}
+                td.col-md-2(
+                        sortable="published",
+                        id="#{CONTAINER_ID}-row-{{ $index }}-published"
+                )
+                    span(ng-if="container.publishedAt")
+                        | {{ container.publishedAt| date:'yyyy-MM-dd HH:mm' }}
+                    span(ng-if="!container.publishedAt")
+                        span(translate="Never published")
+                td.col-md-1.actions.context-menu-actions(
+                    id="#{CONTAINER_ID}-row-{{ $index }}-action",
+                    ng-class="{active: showMenu, 'disabled': !container.hasPermission('edit')}"
+                )
+                    ul.list-inline(ng-if="showMenu")
+                        li
+                            a(
+                            href="",
+                            ui-sref="containerEdit({containerId: container.id})",
+                            id="#{CONTAINER_ID}-row-{{ $index }}-edit"
+                            )
+                                i.icon-edit
+                                span(translate="Edit")
+                        li
+                            a(
+                            href="",
+                            cc-confirm="view.removeContainer(container)",
+                            id="#{CONTAINER_ID}-row-{{ $index }}-delete"
+                            )
+                                i.icon-delete
+                                span(translate="Delete")
+                    a.dots(
+                        href="",
+                        ng-click="container.hasPermission('edit') ? showMenu = !showMenu : ''"
+                    )
+                        i.icon-dots(ng-if="container.hasPermission('edit')")

@@ -1,0 +1,25 @@
+SevenTag\Api\SecurityBundle\Entity\AccessToken:
+    type: entity
+    table: oauth2_access_token
+    repositoryClass: SevenTag\Api\SecurityBundle\Entity\AccessTokenRepository
+    manyToOne:
+        client:
+            targetEntity: SevenTag\Api\SecurityBundle\Entity\Client
+            joinColumn:
+                nullable: false
+                onDelete: CASCADE
+                onUpdate: CASCADE
+        user:
+            targetEntity: SevenTag\Api\UserBundle\Entity\User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: CASCADE
+                onUpdate: CASCADE
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    lifecycleCallbacks: {  }

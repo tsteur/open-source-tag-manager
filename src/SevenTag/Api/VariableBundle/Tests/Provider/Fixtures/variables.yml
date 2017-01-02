@@ -1,0 +1,9 @@
+variables:
+    pageUrl:
+        name: 'Page Url'
+        type: 'url'
+        value: 'href'
+    referrer:
+        name: 'Referrer'
+        type: 'document'
+        value: 'href'

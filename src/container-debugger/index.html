@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="<%= getLocale() %>" ng-app="application" ng-cloak>
+<head>
+    <meta charset="UTF-8">
+    <title><%= __('Debugger for admin') %></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="stylesheet" href="##host##/icons.css" type="text/css" />
+    <link rel="stylesheet" href="##host##/animate.min.css" type="text/css" />
+    <link rel="stylesheet" href="##host##/styles.css" type="text/css" />
+</head>
+<body ng-class="{ 'mobile': isMobile() }">
+    <%- include widgets/navbar/_navbar.html %>
+    <div id="brand-minimize" class="brand-minimize-not-mobile" minimize-element ng-if="!isMobile()">
+        <i class="icon-logo"></i>
+    </div>
+    <div id="container-wrapper" minimize-cloak>
+        <%- include widgets/tabs/_tabs.html %>
+
+        <main id="page-view" ui-view style="clear:both"></main>
+
+        <%- include widgets/breakpoints/_breakpoints.html %>
+    </div>
+
+    <script type="text/ng-template" id="ccHelp.html">
+        <i
+            class="icon-info-circle helper"
+            ng-class="{'icon-info-circle': !active, 'icon-info-fill': active}"
+            tooltip-placement="{{ placement}}"
+            tooltip-html-unsafe="{{ content }}"
+            ng-init="active = false;"
+            ng-mouseenter="active = true"
+            ng-mouseleave="active = false"
+        >
+        </i>
+    </script>
+
+    <script src="##host##/vendor.js"></script>
+    <script src="##host##/scripts.js"></script>
+    <script src="##host##/templates.cache.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+SevenTag\Component\Variable\Model\VariableType:
+    exclusion_policy: None
+    accessor_order: custom
+    custom_accessor_order: [id, name]
+    properties:
+        id:
+            expose: true
+            groups: [variables, variable, variableType]
+        name:
+            expose: true
+            groups: [variables, variable, variableType, containerVariable]
+        collectorName:
+            expose: true
+            groups: [containerVariable]
+        helper:
+            expose: true
+            groups: [variableType, containerVariable]

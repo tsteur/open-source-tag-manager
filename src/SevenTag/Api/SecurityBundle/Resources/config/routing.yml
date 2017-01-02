@@ -1,0 +1,11 @@
+security:
+    resource: "@SevenTagSecurityBundle/Controller/SecurityRestController.php"
+    type:     rest
+
+token:
+    resource: "@SevenTagSecurityBundle/Controller/TokenRestController.php"
+    type:     rest
+
+integration:
+    resource: "@SevenTagSecurityBundle/Controller/IntegrationRestController.php"
+    type:     rest

@@ -1,0 +1,4 @@
+src_dir: src
+
+coverage_clover:
+  - build/coverage/coverage-*.xml

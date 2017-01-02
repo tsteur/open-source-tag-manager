@@ -1,0 +1,33 @@
+language: php
+
+php:
+  - "5.4"
+
+before_install:
+  - nvm install 5.6
+  - npm -v
+  - node -v
+
+sudo: required
+
+before_script:
+  - ./travis/build/prepare.sh
+#  - ./travis/build/server.sh
+
+script:
+  - ./travis/build/script.sh
+
+addons:
+   hosts:
+     - 7tag.dev
+
+notifications:
+  email: false
+
+cache:
+  directories:
+    - node_modules
+
+after_script:
+  - ./bin/coveralls -v
+

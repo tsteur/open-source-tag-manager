@@ -1,0 +1,5 @@
+services:
+    seven_tag_plugin_facebook_retargeting_pixel_custom_template.form_type.facebook_retargeting_pixel:
+        class: SevenTag\Plugin\FacebookRetargetingPixelCustomTemplateBundle\Form\FacebookRetargetingPixelFormType
+        tags:
+            - { name: form.type, alias: facebook_retargeting_pixel_form_type }

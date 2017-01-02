@@ -1,0 +1,10 @@
+imports:
+    - { resource: 'forms.yml' }
+
+services:
+    seven_tag_plugin_click_tale_custom_template.template_provider.click_tale:
+        class: SevenTag\Plugin\ClickTaleCustomTemplateBundle\Template\ClickTaleProvider
+        parent: seven_tag_tag.templating_provider
+        public: false
+        tags:
+            - { name: seven_tag_tag_template_provider }

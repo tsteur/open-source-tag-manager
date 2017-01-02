@@ -1,0 +1,15 @@
+FOS\OAuthServerBundle\Model\Client:
+    exclusion_policy: all
+    properties:
+        id:
+            expose: true
+            groups: [integration, integrations]
+        secret:
+            expose: true
+            serialized_name: client_secret
+            groups: [integration]
+    virtual_properties:
+        getPublicId:
+            expose: true
+            groups: [integration]
+            serialized_name: client_id

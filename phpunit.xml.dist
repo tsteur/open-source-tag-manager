@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- http://phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit
+        backupGlobals               = "false"
+        backupStaticAttributes      = "false"
+        colors                      = "true"
+        convertErrorsToExceptions   = "true"
+        convertNoticesToExceptions  = "true"
+        convertWarningsToExceptions = "true"
+        processIsolation            = "false"
+        stopOnFailure               = "false"
+        syntaxCheck                 = "false"
+        bootstrap                   = "var/bootstrap.php.cache" >
+
+    <testsuites>
+        <testsuite name="Project Test Suite">
+            <directory>src/SevenTag/*Bundle/Tests</directory>
+            <directory>src/SevenTag/*/*Bundle/Tests</directory>
+            <directory>src/SevenTag/Updater/Tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>src</directory>
+            <exclude>
+                <directory>src/SevenTag/*Bundle/Resources</directory>
+                <directory>src/SevenTag/*/*Bundle/Tests</directory>
+                <directory>src/SevenTag/*/*Bundle/Controller</directory>
+                <directory>src/SevenTag/*/*Bundle/Form</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <php>
+        <server name="KERNEL_DIR" value="app/"/>
+    </php>
+
+    <logging>
+        <log type="coverage-clover" target="build/coverage/coverage-phpunit.xml"/>
+    </logging>
+
+</phpunit>

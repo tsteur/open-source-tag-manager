@@ -1,0 +1,84 @@
+/**
+ * Copyright (C) 2015 Digimedia Sp. z.o.o. d/b/a Clearcode
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.cc-select {
+	.dropdown {
+		.btn-select {
+			width: 100%;
+			padding: 10px 21px 6px 21px;
+			color: $select-color;
+			background-color: $select-bg-btn;
+			border: 1px solid $select-border-color;
+			font-size: 12px;
+			text-align: left;
+			font-weight: 400;
+
+			strong i {
+				font-size: 16px;
+				font-weight: 700;
+			}
+			&:active:focus {
+				text-decoration: none;
+				outline: none;
+				box-shadow: none;
+			}
+		}
+
+		ul {
+			margin: 0px;
+			padding: 0px;
+			width: 100%;
+			border-top-left-radius: 0px;
+			border-top-right-radius: 0px;
+            border: 1px;
+			li {
+				padding: 6px 21px;
+				color: $select-color;
+				font-size: 12px;
+				text-align: left;
+				font-weight: 400;
+				border-bottom: 1px solid;
+				border-color: $select-bg-btn;
+				cursor: pointer;
+				&:hover {
+					background-color: $select-bg-li-hover;
+					color: $select-color-li-hover;
+				}
+			}
+
+			li:last-child {
+				border-style: none;
+			}
+		}
+	}
+
+	.dropdown.open .btn-select {
+		background-color: $select-bg-btn-hover;
+		border-bottom-left-radius: 0px;
+		border-bottom-right-radius: 0px;
+	}
+}
+
+.websites-parameter-type + .dropdown{
+	.btn-select {
+		width: 115px !important;
+	}
+}
+
+.dropdown.insert-variables {
+	position: initial;
+}

@@ -1,0 +1,43 @@
+imports:
+    - { resource: 'forms.yml' }
+    - { resource: 'repositories.yml' }
+    - { resource: 'security.yml' }
+
+services:
+    seven_tag_user.reset_password.request:
+        class: SevenTag\Api\UserBundle\ResetPassword\ResetPasswordRequest
+        arguments: [@fos_user.user_manager, @fos_user.util.token_generator, @seventag.user.mailer.mailer]
+
+    seven_tag_user.reset_password.token:
+        class: SevenTag\Api\UserBundle\ResetPassword\ResetPasswordToken
+        arguments: [@fos_user.user_manager]
+
+    seven_tag_user.role_list_provider:
+        class: SevenTag\Api\UserBundle\RoleListProvider\RoleListProvider
+        arguments: [%security.role_hierarchy.roles%]
+
+    seven_tag_user.validator.roles_validator:
+        class: SevenTag\Api\UserBundle\Validator\RolesValidator
+        arguments: [@seven_tag_user.role_list_provider]
+        tags:
+            - { name: validator.constraint_validator, alias: seven_tag_user_roles_validator }
+
+    seven_tag_user.user_manipulator:
+        class: SevenTag\Api\UserBundle\UserManipulator\UserManipulator
+        arguments: [@fos_user.util.token_generator, @fos_user.user_manager, @seventag.user.mailer.mailer]
+
+    seven_tag_user.permissions_provider:
+        class: SevenTag\Api\UserBundle\PermissionsProvider\PermissionsProvider
+        arguments: [@seven_tag_user.repository.user_repository, @seven_tag_security.utils.bitmask_to_permissions_mapper, @seven_tag_security.utils.user_mask_resolver]
+
+    seventag.user.mailer.mailer:
+        class: SevenTag\Api\UserBundle\Mailer\Mailer
+        arguments:
+            - @request_stack
+            - @mailer
+            - @templating
+            - confirmation.template: SevenTagUserBundle:Registering:email.txt.twig
+              resetting.template : SevenTagUserBundle:Registering:resetting.txt.twig
+              from_email:
+                  confirmation: %fos_user.registration.confirmation.from_email%
+                  resetting: %fos_user.resetting.email.from_email%

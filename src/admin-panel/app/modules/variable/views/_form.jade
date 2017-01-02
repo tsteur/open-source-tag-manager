@@ -1,0 +1,57 @@
+- var NAME_FORM_FIELD = 'name';
+
++form(
+    FORM_NAME
+)(stg-form, form-resource="#{LOADING_PROMISE}")
+    div(
+        ng-init="view.validateVariable = false;"
+    )
+        .stepper-step
+            .stepper-index
+                span 1
+            .row
+                .col-lg-8.col-md-12.col-sm-12
+                    +field_text(
+                        VARIABLE_FORM_NAME,
+                        "view.variable.name",
+                        NAME_FORM_FIELD,
+                        "{{'Variable name'|translate}}" + " <span class=\"important\">*</span>",
+                        "view.validateVariable"
+                    )#variable-form-name(
+                        ng-required="true",
+                        placeholder="{{'Name your variable'|translate}}",
+                        ng-init="view.conditionLength = 0",
+                        ng-disabled="!currentContainer.$container.hasPermission('edit')"
+                    )
+                .col-lg-4
+                    // Place for help
+        .stepper-step
+            .stepper-index
+                span 2
+            .form-group
+                .row
+                    .col-lg-8.col-md-12.col-sm-12
+                        label(translate="Variable type").control-label
+                        cc-help(
+                            placement="right"
+                            content="{{'Choose or create a new variable(s) for conditions or use them in your tag template.'|translate}}"
+                        )
+                .row
+                    .col-lg-8.col-md-12.col-sm-12
+                        .row
+                            .col-md-4.col-sm-6(ng-repeat="type in view.types")
+                                .stg-tag-template.stg-tag-template-btn(
+                                    ng-click="view.setVariableType(type); view.validateVariable = false;",
+                                    ng-class="{'active': view.variable.type.id === type.id || !view.formTouched }"
+                                    tooltip-placement="right"
+                                    tooltip-html-unsafe="{{ type.helper }}"
+                                    tooltip-class="help-tooltip-wrapper"
+                                ) {{ type.name|translate }}
+        .stepper-step(ng-if="view.variable.type !== undefined")
+            .stepper-index
+                span 3
+            .form-group
+                .row
+                    .col-lg-8.col-md-12.col-sm-12
+                        label(translate="Variable configuration").control-label
+                        div(ng-include="view.getConfigurationTemplate();")

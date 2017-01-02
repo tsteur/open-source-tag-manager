@@ -1,0 +1,6 @@
+variables:
+    resource: "@SevenTagVariableBundle/Controller/VariableRestController.php"
+    type:     rest
+variable-types:
+    resource: "@SevenTagVariableBundle/Controller/VariableTypeRestController.php"
+    type:     rest

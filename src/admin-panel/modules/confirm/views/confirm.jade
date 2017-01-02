@@ -1,0 +1,17 @@
+div(ng-class="{confirm: turnOn}")
+    a(ng-transclude, class="confirm-content confirm-text", ng-click="confirm()")
+    span(ng-if="turnOn") ?
+    a.confirm-option.confirm-option-yes(
+        href="",
+        ng-if="turnOn",
+        ng-click="approve()",
+        id="confirm-option-yes",
+        translate="Yes"
+    )= 'Yes'
+    a.confirm-option.confirm-option-no(
+        href="",
+        ng-if="turnOn",
+        ng-click="cancel()",
+        id="confirm-option-no",
+        translate="No"
+    )= 'No'

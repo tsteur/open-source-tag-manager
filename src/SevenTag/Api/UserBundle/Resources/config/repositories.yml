@@ -1,0 +1,7 @@
+services:
+    seven_tag_user.repository.user_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - SevenTag\Api\UserBundle\Entity\User

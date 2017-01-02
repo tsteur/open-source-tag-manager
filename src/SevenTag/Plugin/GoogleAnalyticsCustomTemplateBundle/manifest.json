@@ -1,0 +1,8 @@
+{
+  "name": "seventag_plugin_google_analytics_custom_template",
+  "version": "1.0.0",
+  "assets-js": [
+    {"path": "js/stgGoogleAnalytics.js", "target": "bottom", "externalPath": false}
+  ],
+  "containerjs-configs": []
+}

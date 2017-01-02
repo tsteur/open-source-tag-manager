@@ -1,0 +1,10 @@
+.stg-footer(stg-set-version, stg-version="#{version}", ng-if="security.isAuthenticated()")
+    .container(ng-controller="clearcode.tm.update.VersionController as versionCtrl")
+        .row(ng-cloak)
+            .col-md-6.col-md-offset-3.stg-standalone-text
+                span(translate="7tag version")
+                |  #{version}.
+                span(ng-if="versionCtrl.updateAvailable()")
+                    |  (
+                    a(ng-click="versionCtrl.startUpdate()", translate="a new version available")
+                    | )

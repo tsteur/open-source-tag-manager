@@ -1,0 +1,3 @@
+containers:
+    resource: "@SevenTagAppBundle/Controller/AdminToolsController.php"
+    type:     annotation

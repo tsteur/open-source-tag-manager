@@ -1,0 +1,5 @@
+services:
+    seven_tag_trigger.form_type.trigger_form_type:
+        class: SevenTag\Api\TriggerBundle\Form\Type\TriggerType
+        tags:
+            - { name: form.type }

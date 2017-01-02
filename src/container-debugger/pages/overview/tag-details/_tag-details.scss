@@ -1,0 +1,62 @@
+#overview-tag-details {
+    @include content();
+
+    h5 {
+        @extend .text-uppercase;
+        margin-bottom: 14px;
+        font-size: 13px;
+    }
+}
+
+#overview-tag-details-breadcrumb {
+    @extend #event-log-breadcrumb;
+}
+
+#overview-tag-details-code-preview {
+    padding-top: 0;
+    @extend .code-preview;
+}
+
+#overview-tag-details-status {
+    padding: 0 20px 10px 26px;
+}
+
+#overview-tag-details-triggers {
+    @extend .list;
+    padding-bottom: 10px;
+
+    i {
+        font-size: 17px;
+        position: absolute;
+
+        &.icon-resolved {
+            color: green;
+        }
+
+        &.icon-unresolved {
+            color: #cccccc;
+        }
+    }
+
+    .ng-enter {
+        animation: zoomIn 0.5s;
+    }
+
+    table .children {
+        padding: 0;
+
+        i {
+           animation: fadeIn 2s;
+        }
+
+        & > table {
+            margin-bottom: 0px;
+
+            td {
+                padding: 18px;
+                border: none;
+            }
+        }
+
+    }
+}

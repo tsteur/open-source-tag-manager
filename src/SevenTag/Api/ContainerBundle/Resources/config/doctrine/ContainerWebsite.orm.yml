@@ -1,0 +1,27 @@
+SevenTag\Api\ContainerBundle\Entity\ContainerWebsite:
+    type: entity
+    table: container_website
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        url:
+            type: string
+            length: 255
+        parameterType:
+            type: integer
+            default: 0
+    manyToOne:
+        container:
+            targetEntity: SevenTag\Api\ContainerBundle\Entity\Container
+            inversedBy: websites
+            joinColumn:
+                name: container_id
+                referencedColumnName: id
+                onDelete: CASCADE
+                onUpdate: CASCADE
+                nullable: false
+    lifecycleCallbacks: {  }

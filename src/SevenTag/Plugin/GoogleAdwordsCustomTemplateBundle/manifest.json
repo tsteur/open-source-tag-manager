@@ -1,0 +1,8 @@
+{
+  "name": "seventag_plugin_google_adwords_custom_template",
+  "version": "1.0.0",
+  "assets-js": [
+    {"path": "js/stgGoogleAdwords.js", "target": "bottom", "externalPath": false}
+  ],
+  "containerjs-configs": []
+}

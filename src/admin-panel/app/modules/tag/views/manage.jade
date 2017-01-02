@@ -1,0 +1,186 @@
+include ../../../views/_mixins
+
+extends ../../../views/_view-list.jade
+
+block vars
+    - var ENTITY_NAME = 'Tag';
+
+block header
+    i.icon-tag
+    strong(translate="Tags")
+    cc-help(
+        placement="right"
+        content="{{'A tag is a snippet of JavaScript that sends information to a third party. You don\\'t need to add your tags directly to your website, just specify how and when the tags should fire.'|translate}}",
+    )
+
+block actions
+    +button('primary')#tag-list-create-link(
+        href,
+        ui-sref="tagCreate({containerId: activeContainerId})",
+        class="stg-link-btn"
+        ng-if="view.permissions.indexOf('edit') !== -1"
+    )
+        span.plus +
+        strong(translate="Add a tag")
+
+block content
+    - var TAG_ID = 'tag-list';
+    .div-table(
+        id=TAG_ID,
+        ng-init="view.showMenu = -1; view.showTriggers = -1;"
+        ng-hide="!view.tableParams.settings().$loading && view.tableParams.total() === 0"
+    )
+        .row.div-table-header
+            .sortable.col-xs-0-5
+                // column reserved for tracking marker
+            .sortable.col-xs-5
+                span(translate="Name")
+            .sortable.col-xs-1-5
+                span(translate="Type")
+                cc-help(
+                    placement="top"
+                    content="{{'There are two types of tags:'|translate}}" + "<br>" + "{{'- asynchronous - fired based on choosen triggers'|translate}}" + "<br>" + "{{'- synchronous - fired and resolved first, even before the page is loaded'|translate}}",
+                )
+            .sortable.col-xs-1-5
+                span(translate="Triggers")
+                cc-help(
+                    placement="top"
+                    content="{{'A list of all the triggers added to a tag.'|translate}}",
+                )
+            .sortable.col-xs-1-5
+                span(translate="Status")
+                cc-help(
+                    placement="top"
+                    content="{{'Tags with status inactive will be not fired after publication.'|translate}}"
+                )
+            .sortable.col-xs-1
+                span(translate='Priority')
+        .row.div-table-row(
+            id="#{TAG_ID}-row{{ $index }}",
+            ng-repeat="tag in $data",
+        )
+            .col-xs-0-5.div-table-cell(
+                id="#{TAG_ID}-row{{ $index }}-tracking",
+                sortable="tracking"
+            )
+                i.icon-tracking-tag.tag-manage-tracking-icon(
+                    ng-if="tag.respectVisitorsPrivacy",
+                    tooltip-placement="right"
+                    tooltip-class="help-tooltip-wrapper tag-manage-tracking-icon"
+                    tooltip-html-unsafe="{{'This tag is marked as \"Tracking tag\" because you have selected the \"respect visitors privacy\" option.'|translate}}" + "<br /><br />" +
+                    "{{'This tag won`t be resolved when your visitors:'|translate}}" + "<br />" +
+                    "{{'- select the Do Not Track option in their web browser'|translate}}" + "<br />" +
+                    "{{'and/or'|translate}}" + " <br /> " +
+                    "{{'- explicitly opt out from being tracked (go to \"7tag options\" &rarr; \"Opt-out message generator\" to learn more about the opt-out feature).'|translate}}"
+                )
+                i.icon-tracking-tag.tag-manage-tracking-icon.tag-manage-tracking-icon-disabled(
+                    ng-if="!tag.respectVisitorsPrivacy",
+                )
+            .col-xs-5.div-table-cell.ellipsis(
+                id="#{TAG_ID}-row{{ $index }}-name",
+                sortable="name"
+            )
+                a(
+                    href,
+                    ui-sref="tagEdit({containerId: activeContainerId, tagId: tag.id})",
+                    title="{{ tag.name }}"
+                ) {{ tag.name | limitTo : 30 }}{{tag.name.length > 30 ? '...' : ''}}
+                span.stg-status-badge(
+                    ng-class="view.getPublishedStatus(tag).class"
+                    tooltip-placement="right"
+                    tooltip-class="help-tooltip-wrapper"
+                    tooltip-html-unsafe="{{'Last edit date:'|translate}}" + "<br />" +
+                    "{{ tag.updatedAt| date:'yyyy-MM-dd HH:mm' }}"
+                )
+                    | {{ view.getPublishedStatus(tag).name |translate }}
+            .col-xs-1-5.div-table-cell(
+                id="#{TAG_ID}-row{{ $index }}-is-synchronous"
+            )
+                | {{ (tag.isSynchronous ? 'synchronous' : 'asynchronous') | translate }}
+            .col-xs-1-5.div-table-cell(
+                id="#{TAG_ID}-row{{ $index }}-triggers",
+                sortable="triggers"
+            )
+                a(href="", ng-click="view.toggleTriggerList($index)")
+                    span {{tag.triggers.length}}
+            .col-xs-1-5.div-table-cell(
+                id="#{TAG_ID}-row{{ $index }}-status"
+            )
+                a(
+                    href="",
+                    ng-click="view.changeStatus(tag)",
+                    id="#{TAG_ID}-row-{{ $index }}-activate-active",
+                    ng-if="!tag.statusChangePending && tag.isActive"
+                    title="{{ 'Active'|translate }}"
+                )
+                    .tag-status.tag-status-active(
+                        id="#{TAG_ID}-row-{{ $index }}-status-active"
+                    )
+                a(
+                    href="",
+                    ng-click="view.changeStatus(tag)",
+                    id="#{TAG_ID}-row-{{ $index }}-activate-inactive",
+                    ng-if="!tag.statusChangePending && !tag.isActive"
+                    title="{{ 'Inactive'|translate }}"
+                )
+                    .tag-status.tag-status-inactive(
+                        id="#{TAG_ID}-row-{{ $index }}-status-inctive"
+                    )
+                a(
+                    href="",
+                    id="#{TAG_ID}-row-{{ $index }}-activate-is-pending",
+                    ng-if="tag.statusChangePending"
+                    title="{{ 'Pending'|translate }}"
+                )
+                    .tag-status.tag-status-pending(
+                        id="#{TAG_ID}-row-{{ $index }}-status-inctive"
+                    )
+            .col-xs-1.div-table-cell(
+                id="#{TAG_ID}-row{{ $index }}-priority"
+            ) {{ tag.priority }}
+            .col-xs-1.div-table-cell.actions.context-menu-actions(
+                data-title="",
+                id="#{TAG_ID}-row-{{ $index }}-action",
+                ng-class="{active: view.showMenu === $index , 'disabled': view.permissions.indexOf('edit') === -1}"
+            )
+                ul.list-inline(ng-if="view.showMenu === $index")
+                    li
+                        a(
+                            href="",
+                            ui-sref="tagEdit({containerId: activeContainerId, tagId: tag.id})",
+                            id="#{TAG_ID}-row-{{ $index }}-edit"
+                        )
+                            i.icon-edit
+                            span(translate='Edit')
+                    li
+                        a(
+                            href="",
+                            cc-confirm="view.removeTag(tag)",
+                            id="#{TAG_ID}-row-{{ $index }}-delete"
+                        )
+                            i.icon-delete
+                            span(translate='Delete')
+                a.dots(
+                    href="",
+                    ng-click="view.toggleActionMenu($index)"
+                )
+                    i.icon-dots(ng-if="view.permissions.indexOf('edit') !== -1")
+
+            ul.col-xs-12.tag-manage-triggers-list(ng-if="view.showTriggers === $index")
+                .row
+                    li.col-md-2.col-sm-6.col-xs-6(
+                        ng-repeat="trigger in tag.triggers",
+                        id="tag-list-row-{{sectionIndex}}-triggers{{$index}}",
+                    )
+                        a(
+                            href="",
+                            ui-sref="triggerEdit({containerId: activeContainerId, triggerId: trigger.id})",
+                            title="{{ trigger.name }}"
+                        )
+                            i.icon-trigger
+                            | {{ trigger.name | limitTo : 13 }}{{ trigger.name.length > 13 ? '...' : '' }}
+                    li(
+                        ng-if="tag.triggers.length === 0"
+                    )
+                        span(translate='Please add a trigger to fire this tag')
+    div(ng-include="'st-pagination.html'")

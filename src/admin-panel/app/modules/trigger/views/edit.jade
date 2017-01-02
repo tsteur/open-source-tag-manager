@@ -1,0 +1,19 @@
+include ../../../views/_mixins.jade
+extends ../../../views/_view-forms.jade
+
+block vars
+    - var LOADING_PROMISE = 'triggerForm.triggerPromise';
+    - var FORM_TITLE = "{{'Configure trigger'|translate}}";
+    - var TRIGGER_FORM_NAME = 'editTriggerForm';
+    - var FORM_NAME = TRIGGER_FORM_NAME;
+    - var FORM_RESOURCE = 'triggerForm.editTriggerPromise';
+
+block fields
+    include _form.jade
+
+block actions
+    .form-group(ng-if="currentContainer.$container.hasPermission('edit')")
+        +button('primary')#trigger-form-save-button(
+            ng-click="triggerForm.validateTrigger(#{TRIGGER_FORM_NAME}, view.conditionLength) ? triggerForm.submitForm(triggerForm.trigger) : triggerForm.displayInvalidFormMessage(view)",
+            translate="Save"
+        )

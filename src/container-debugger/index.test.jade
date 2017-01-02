@@ -1,0 +1,25 @@
+extends ./index.test.layout
+block scripts
+    script
+        | window.stgEnv = 'dev';
+    script(src="stg.js")
+    script
+        | var stg = window.sevenTag,
+        |     debuggerHandler = window.sevenTag.debugger;
+        | stg.debugOptions = {enabled: true, containerName: 'e2e container'};
+        | debuggerHandler.enabled = true;
+        | debuggerHandler.start(stg.tagTree);
+        | debuggerHandler.debug();
+block content
+    script
+        | var dataLayer = [];
+        | dataLayer.push({'event': 'customEvent'});
+    a(id="referrer", href='##host##/index.test.referrer.html#/report/summary') referrer link
+    button(id="test-button", class="simple-btn", data-action="bea").
+        Be Awesome
+    div.loginbox()
+        form(form action="##host##/index.test.html?user=&pass=#/report/summary", class="form-class",name="login", id="test-form")
+            input(type="text", id="user-name-input", name="user")
+            input(type="password", id="user-pass-input", name="pass")
+            input(type="submit", id="submit-button", value="login")
+                                                   

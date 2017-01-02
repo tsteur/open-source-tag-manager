@@ -1,0 +1,14 @@
+<div id="breakpoints">
+    <div id="breakpoints-title">
+        <%= __('Breakpoints') %>
+        <cc-help ng-if="isHelperVisible()" content="<%= __('With breakpoints You can stop the page change events from execution. This makes it easier to check if proper tags were triggered e.g. during form submission') %>" placement="up"></cc-help>
+    </div>
+    <input
+        type="checkbox"
+        id="breakpoints-input"
+        ng-model="debugger.$debugger.breakpoints.enabled"
+        class="stg-toggle"
+        ng-class="{'checked': debugger.$debugger.breakpoints.isEnabled()}"
+    />
+    <label for="breakpoints-input" id="breakpoints-toggle" class="stg-toggle-btn"></label>
+</div>

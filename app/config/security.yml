@@ -1,0 +1,52 @@
+security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: sha512
+
+    role_hierarchy:
+        ROLE_CONTAINERS_CREATE: ~
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_CONTAINERS_CREATE]
+        ROLE_API: [ROLE_USER]
+
+    providers:
+        fos_userbundle:
+            id: fos_user.user_provider.username_email
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt|error)|css|images|js)/
+            security: false
+
+        oauth_token:
+            pattern:    ^/api/oauth/v2/token
+            security:   false
+
+        api:
+            pattern:    ^/api
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  true
+
+        admin_tools:
+            pattern:    ^/admin-tools
+            fos_oauth:  true
+            stateless:  true
+            anonymous:  true
+
+    access_control:
+        - { path: ^/containers/(\d+)/noscript.html, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+        - { path: ^/containers/tagtree/(\d+).jsonp, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+        - { path: ^/api/doc, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+        - { path: ^/api/oauth, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+        - { path: ^/api/translations, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+        - { path: ^/api/reset-password, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+        - { path: ^/api/containers/(\d+).js, roles: [ IS_AUTHENTICATED_ANONYMOUSLY ] }
+        - { path: ^/api/users/me, roles: [ ROLE_USER ], methods: [PUT, GET] }
+        - { path: ^/api/users/me/change-password, roles: [ ROLE_USER ], methods: [POST] }
+        - { path: ^/api/users/(\d+)/reset-password, roles: [ ROLE_SUPER_ADMIN ], methods: [POST] }
+        - { path: ^/api/users/(\d+), roles: [ ROLE_SUPER_ADMIN ], methods: [DELETE, PUT, GET] }
+        - { path: ^/api/users, roles: [ ROLE_SUPER_ADMIN ], methods: [GET, POST] }
+        - { path: ^/api/integration/(\d+), roles: [ ROLE_SUPER_ADMIN ] }
+        - { path: ^/api/integration, roles: [ ROLE_SUPER_ADMIN ] }
+        - { path: ^/api/containers$, roles: [ ROLE_CONTAINERS_CREATE ], methods: [POST] }
+        - { path: ^/api, roles: [ ROLE_USER ] }
+        - { path: ^/admin-tools, roles: [ ROLE_SUPER_ADMIN ] }

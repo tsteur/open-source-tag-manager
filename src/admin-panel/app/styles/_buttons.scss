@@ -1,0 +1,125 @@
+/**
+ * Copyright (C) 2015 Digimedia Sp. z.o.o. d/b/a Clearcode
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
+
+.btn-group > a {
+  border: none;
+  background-color: $gray;
+  padding-top: 8px;
+  font-weight: 500;
+
+  &.btn[disabled], &.btn[disabled]:hover {
+    z-index: 0;
+  }
+
+  &:not(:first-child):before {
+    content: "|";
+    position: relative;
+    left: -15px;
+    color: #226c3e;
+  }
+
+  &.btn-navbar {
+    height: $navbar-dropdown-height;
+  }
+}
+
+.btn-link {
+  a {
+    color: $text-color;
+    font-size: $font-size-base;
+  }
+  &:hover, a:hover, span {
+    text-decoration: none;
+    color: $text-color;
+  }
+  &.confirm:hover {
+    background-color: $btn-confirm-bg;
+  }
+}
+
+.btn {
+    border-radius: 3px;
+}
+
+button.btn.btn-copyToClipboard {
+  padding: 7px 19px;
+  position: absolute;
+  right: 25px;
+  top: 35px;
+  font-size: .9em;
+  background-color: #ccc;
+  color: #4d4d4d;
+  border-radius: 3px;
+  i[class^=icon-] {
+    position: relative;
+    top: 2px;
+    margin-right: 7px;
+    color: $text-color;
+    font-size: 1.2em;
+  }
+  &:hover, &:active {
+    color: $text-color;
+  }
+}
+
+.dropdown .btn,
+.navbar .btn {
+  white-space: normal;
+}
+
+a[disabled]:hover {
+    background-color: inherit;
+}
+.cc-radio {
+   position: relative;
+   background: no-repeat 0px -16px url('/app/images/radio.png');
+   width: 16px;
+   height: 16px;
+   float: left;
+   margin-right: 5px;
+   &.radioSelected {
+      background: 0px 0px url('/app/images/radio.png');
+   }
+   &.radioDisabled {
+      opacity: 0.4;
+   }
+   input[type="radio"] {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      margin-left: 0;
+      opacity: 0;
+   }
+}
+
+$tab-bg-color: $body-bg;
+$tab-font-color: $text-color;
+$tab-border-color: #ccc;
+
+.choose-tab {
+    @extend .btn;
+    @extend .btn-block;
+    @include button-variant($tab-font-color, $tab-bg-color, $tab-border-color);
+
+    &.active {
+        box-shadow: none;
+    }
+}

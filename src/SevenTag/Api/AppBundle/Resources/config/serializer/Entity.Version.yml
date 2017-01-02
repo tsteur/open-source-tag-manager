@@ -1,0 +1,6 @@
+SevenTag\Api\AppBundle\Entity\Version:
+  exclusion_policy: all
+  properties:
+    id:
+      expose: true
+      groups: [container, version]

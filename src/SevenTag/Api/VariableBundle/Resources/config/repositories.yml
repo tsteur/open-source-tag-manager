@@ -1,0 +1,13 @@
+services:
+    seven_tag_variable.repository.variable_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - SevenTag\Api\VariableBundle\Entity\Variable
+    seven_tag_variable.repository.variable_type_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - SevenTag\Api\VariableBundle\Entity\VariableType

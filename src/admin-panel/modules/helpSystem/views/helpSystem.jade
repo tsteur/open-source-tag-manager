@@ -1,0 +1,9 @@
+i.help-tooltip(
+    ng-init="active = false"
+    ng-mouseenter="active = true"
+    ng-mouseleave="active = false"
+    ng-class="{ 'icon-info-fill': active, 'icon-info-circle': !active }"
+    tooltip-placement="{{ placement }}"
+    tooltip-html-unsafe="{{ content }}"
+    tooltip-class="help-tooltip-wrapper"
+)

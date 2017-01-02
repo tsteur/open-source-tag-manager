@@ -1,0 +1,141 @@
+$not-fired-color: #ccc;
+
+%status-pill-text{
+    margin: -10px 0;
+    display: inline-block;
+}
+
+.status-pill {
+    padding: 5px 10px;
+    background-color: #ccc;
+    border-radius: 3px;
+    @extend %status-pill-text;
+}
+
+@mixin status-pill-variant($bg, $color, $border) {
+    @extend .status-pill;
+    background-color: $bg;
+    color: $color;
+    border: $border;
+}
+
+@mixin debugger-table-view() {
+    table {
+        @extend .table;
+    }
+}
+
+.list {
+    @include content();
+    padding: 4px 0 0 30px;
+    @include debugger-table-view();
+
+    & > table {
+
+        & > thead {
+
+            & > tr > th {
+
+                @extend .text-uppercase;
+                font-size: 12px;
+                padding: 16px 0;
+                border-bottom: 1px solid #ccc;
+
+            }
+
+        }
+
+        & > tbody {
+
+            & > tr {
+              
+                .overview-tag-list-fired-count{
+                  position: relative;
+                }
+
+                .status-pill-changed-notifier{
+                  visibility: hidden;
+                  float: left;
+                  position: relative;
+                  width: 40px;
+                  background-color: #2e9354;
+                  color: #fff;
+                  padding: 0px;
+                  border-radius: 3px;
+                  left: 0px;
+                  top: 5px;
+                  transition: left 0.5s;
+                  @extend %status-pill-text;
+                }
+                
+                .fire + .status-pill-changed-notifier{
+                  visibility: visible;
+                  left: -35px;
+                  width: 40px;
+                  padding: 5px 10px;
+                }
+                
+                .status-pill {
+                    position: relative;
+                    left: 0px;
+                    z-index: 100;
+
+                    &.fire {
+                        background-color: #ededed;
+                        color: #2e9354;
+                        left: -40px;
+                    }
+                }
+
+                &.status-not-fired {
+                    color: $not-fired-color;
+                    .status-pill {
+                        @include status-pill-variant(#ededed, #cecece, none);
+                    }
+                }
+
+                &.status-disabled {
+                    color: $not-fired-color;
+                    .status-pill {
+                        @include status-pill-variant(#fff, #ccc, 1px solid #ccc);;
+                    }
+                }
+
+                & > td {
+
+                    padding: 18px 0;
+                    font-size: 12px;
+                    cursor: pointer;
+
+                    &.information {
+                        cursor: auto;
+                    }
+
+                    i {
+                        font-size: 17px;
+                        position: absolute;
+                    }
+
+                }
+
+            }
+
+        }
+    }
+}
+
+#overview-tag-list {
+    @extend .list;
+
+    & > table tr {
+        @include linkenable();
+    }
+}
+
+$sizes: 10, 20, 30, 35, 40, 50, 55, 60, 70, 80, 90;
+
+@each $size in $sizes {
+    .size-#{$size} {
+        width: "#{$size}%";
+    }
+}

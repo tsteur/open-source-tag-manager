@@ -1,0 +1,72 @@
+include ../../../views/_mixins
+extends ../../../views/_view-list.jade
+
+block vars
+    - var ENTITY_NAME = 'Variable';
+block header
+    i.icon-variable
+    strong(translate="Variables")
+    cc-help(
+        placement="right"
+        content="{{'A variable store data from your browser to use it in several places e.g. resolving triggers'|translate}}",
+    )
+block actions
+    +button('primary')#variable-list-create-link(
+        href,
+        ui-sref="variableCreate({containerId: activeContainerId})",
+        class="stg-link-btn"
+        ng-if="view.permissions.indexOf('edit') !== -1"
+    )
+        span.plus +
+        strong(translate="Add a variable")
+block content
+    - var VARIABLE_ID = 'variable-list';
+    +table('view.tableParams', VARIABLE_ID, VARIABLE_ID + '-st-header.html')
+        tbody
+            tr(
+                ng-repeat="variable in $data",
+                id="#{VARIABLE_ID}-row{{ $index }}",
+                ng-init="showMenu = false;",
+            )
+                td.col-md-4.ellipsis(
+                    id="#{VARIABLE_ID}-row{{ $index }}-name",
+                    sortable="name"
+                )
+                    a(
+                        href,
+                        ui-sref="variableEdit({containerId: activeContainerId, variableId: variable.id})",
+                        title="{{ variable.name }}"
+                    ) {{ variable.name | limitTo : 30 }}{{variable.name.length > 30 ? '...' : ''}}
+
+                td.col-md-2(
+                    id="#{VARIABLE_ID}-row{{ $index }}-type",
+                ) {{ variable.type.name|translate }}
+                td.col-md-3(
+                    id="#{VARIABLE_ID}-row{{ $index }}-last-edit",
+                ).ellipsis {{ variable.updatedAt | tmDate }}
+                td.col-md-1.actions.context-menu-actions(
+                    id="#{VARIABLE_ID}-row-{{ $index }}-action",
+                    ng-class="{active: showMenu, 'disabled': view.permissions.indexOf('edit') === -1}"
+                )
+                    ul.list-inline(ng-if="showMenu")
+                        li
+                            a(
+                                href="",
+                                ui-sref="variableEdit({containerId: activeContainerId, variableId: variable.id})",
+                                id="#{VARIABLE_ID}-row-{{ $index }}-edit"
+                            )
+                                i.icon-edit
+                                span(translate="Edit")
+                        li
+                            a(
+                                href="",
+                                cc-confirm="view.removeVariable(variable)",
+                                id="#{VARIABLE_ID}-row-{{ $index }}-delete"
+                            )
+                                i.icon-delete
+                                span(translate="Delete")
+                    a.dots(
+                        href="",
+                        ng-click="view.permissions.indexOf('edit') !== -1 ? showMenu = !showMenu : ''"
+                    )
+                        i.icon-dots(ng-if="view.permissions.indexOf('edit') !== -1")

@@ -1,0 +1,84 @@
+include ../../../views/_mixins.jade
+
+extends ../../../views/_view-list.jade
+
+block vars
+    - var ENTITY_NAME = 'User';
+
+block header
+    i.icon-users
+    strong(translate='Users')
+
+block actions
+    +button('primary')#user-list-create-link(
+        href,
+        ui-sref="userCreate()",
+        class="stg-link-btn"
+    )
+        span.plus +
+        strong(translate='Add a user')
+
+block content
+    - var USER_ID = 'user-list';
+
+    +table('view.tableParams', USER_ID, USER_ID + '-st-header.html')
+        tbody
+            tr(ng-repeat="user in $data", id="#{USER_ID}-row-{{ $index }}" ng-init="showMenu = false")
+                td.col-md-4(
+                    sortable="name",
+                    id="#{USER_ID}-row-{{ $index }}-user"
+                )
+                    a(ui-sref="userEdit({userId: user.id})", ui-sref-opts='{id: {{ user.id }}}') 
+                        span(title="{{ user.firstName + ' ' + user.lastName }}") {{ user.firstName + ' ' + user.lastName | limitTo : 43 }}{{ user.firstName.length + user.lastName.length > 42 ? '...' : '' }}
+                td.col-md-3(
+                    sortable="email",
+                    id="#{USER_ID}-row-{{ $index }}-email"
+                )
+                    span(title="{{ user.email }}") {{ user.email | limitTo : 30 }}{{ user.email.length > 30 ? '...' : '' }}
+                td.col-md-1(
+                    sortable="role",
+                    id="#{USER_ID}-row-{{ $index }}-role"
+                ) {{ user.roles.indexOf('ROLE_SUPER_ADMIN') !== -1 ? 'Admin' : 'User' }}
+                td.col-md-1(
+                    sortable="status",
+                    id="#{USER_ID}-row-{{ $index }}-status"
+                )
+                    span(translate="Active", ng-if="user.status")
+                    span(translate="Inactive", ng-if="!user.status")
+                td.col-md-2(
+                    sortable="createdAt",
+                    id="#{USER_ID}-row-{{ $index }}-createdAt"
+                )  {{ user.createdAt | tmDate }}
+                td.col-md-1.actions.context-menu-actions(
+                    id="#{USER_ID}-row-{{ $index }}-action",
+                    ng-class="{active: showMenu}"
+                )
+                    ul.list-inline.users-actions(ng-if="showMenu")
+                        li
+                            a(
+                            href="",
+                            ui-sref="userEdit({userId: user.id})",
+                            id="#{USER_ID}-row-{{ $index }}-edit"
+                            )
+                                i.icon-edit
+                                span(translate='Edit')
+                        li
+                            a(
+                            href="",
+                            cc-confirm="view.resetPassword(user)",
+                            id="#{USER_ID}-row-{{ $index }}-reset-password"
+                            )
+                                i.icon-key
+                                span(translate='Reset password')
+                        li
+                            a(
+                            href="",
+                            cc-confirm="view.removeUser(user)",
+                            id="#{USER_ID}-row-{{ $index }}-delete"
+                            )
+                                i.icon-delete
+                                span(translate='Delete')
+                    a.dots(href="", ng-click="showMenu = !showMenu")
+                        i.icon-dots
+
+

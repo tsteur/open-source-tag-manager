@@ -1,0 +1,294 @@
+
+- var TRIGGER_MODULE_NAME = 'clearcode.tm.trigger';
+- var NAME_FORM_FIELD = 'name';
+- var CODE_FORM_FIELD = 'code';
+- var PRIORITY_FORM_FIELD = 'priority';
+- var DOCUMENT_WRITE_FORM_FIELD = 'Enable document.write';
+
+- var TRIGGER_FORM_NAME = '';
+- var TRIGGER_CREATE_FORM = 'createTriggerForm';
+- var TRIGGER_EDIT_FORM = 'editTriggerForm';
+
+- var TRIGGER_CREATE_RESOURCE = 'triggerForm.triggerPromise';
+- var TRIGGER_EDIT_RESOURCE = 'triggerForm.editTriggerPromise';
+
+include _templateChoosePanel.jade
+
++form(
+    FORM_NAME
+)(stg-form, form-resource="#{FORM_RESOURCE}")
+    div(
+        ng-init="view.showTriggerForm = false; view.validateTag = false; view.validateTriggers = false; view.triggerId = false; view.editTriggerForm = false;"
+    )
+        .stepper-step
+            .stepper-index
+                span 1
+            div
+                +field_text(
+                    FORM_NAME,
+                    "view.tag.name",
+                    NAME_FORM_FIELD,
+                    "{{'Tag name'|translate}}" + " <span class=\"important\">*</span>",
+                    "view.validateTag"
+                )#tag-form-name(
+                    ng-required="true",
+                    placeholder="{{'Name your tag'|translate}}",
+                    ng-disabled="!currentContainer.$container.hasPermission('edit')"
+                )
+                
+                .tag-template-chooser-label.form-group
+                    label(translate='Choose template', class="control-label", ng-if="!view.hasSelectedTemplate()")
+                    label(translate='Chosen tag template', class="control-label", ng-if="view.hasSelectedTemplate()")
+                    cc-help(
+                        placement="right",
+                        content="{{'Asynchronous tags may fire and be resolved after loading the page`s content. It`s good practice to use asynchronous tags for tracking tags.'|translate}}" + "<br>" + "{{'Synchronous tags fire and load first - even before the page loads. The content of page won`t appear until the tag fires. It`s good practice to use synchronous tags for A/B tests.'|translate}}" + "<br><br>" + "{{'Avoid creating tags manually for well-known tags types like Piwik, Google Adwords etc. Custom tag templates engine just replaces values from form and passes them to appropriate places in tag template code.'|translate}}"
+                    )
+                ul.nav.nav-tabs
+                    li(ng-class="{active: view.isTagTemplateTabActive('async')}")
+                        a#tag-templates-async(translate='Asynchronous', ng-click="view.setTagTemplateTab('async')")
+                    li(ng-class="{active: view.isTagTemplateTabActive('sync')}")
+                        a#tag-templates-sync(translate='Synchronous', ng-click="view.setTagTemplateTab('sync')")
+                .tab-content
+                    div(ng-switch='tagTemplateTab')
+                        .tab-pane.panel.panel-default(ng-switch-when='async')
+                            .panel-body
+                                +tag_templates_panel("view.asynchronousTemplates", false)
+                        .tab-pane.panel.panel-default(ng-switch-when='sync')
+                            .panel-body
+                              +tag_templates_panel("view.synchronousTemplates", true)
+        .stepper-step(ng-if="view.displayStepsAfterFirst")
+            .stepper-index
+                span 2
+            div(ng-if="view.template.templateUrl && view.tag.template !== undefined")
+                div(ng-include="view.template.templateUrl")
+
+            div(ng-if="view.hasSelectedPluginTemplate()")
+                .row(ng-repeat="field in view.templateFields")
+                    div.col-md-12.col-sm-12(class="{{ field.roles.hasOwnProperty('column') ? 'col-lg-' + field.roles.column : 'col-lg-12' }}", ng-class="{'hidden' : field.type === 'hidden'}")
+                        .form-group(ng-class="{ 'has-error': tagForm[field.name].$dirty && tagForm[field.name].$invalid || view.validateTag && tagForm[field.name].$error.required}", id="conversion-label-{{ $index }}")
+                            label.control-label {{ field.label }}
+                                span.important(ng-if="field.roles.required")  *
+                            cc-help(
+                                ng-if="field.helper",
+                                placement="right"
+                                content= "{{ field.helper }}",
+                            )
+                            input.form-control(
+                                ng-if="field.type == 'text' || field.type == 'hidden'"
+                                type="{{ field.type }}",
+                                name="{{ field.name }}",
+                                ng-model="view.tag.templateOptions[field.name]",
+                                ng-required="field.roles.required && view.tag.template",
+                                placeholder="{{ field.placeholder }}",
+                                variable-selector,
+                                variable-click-outside
+                            )
+                            select.form-control(
+                                ng-if="field.type == 'select'"
+                                ng-model="view.tag.templateOptions[field.name]",
+                                cc-select,
+                                ng-options="value.id as value.name for value in field.values",
+                                cc-select-options="field.values",
+                                cc-select-value="id",
+                                cc-select-label="name"
+                            )
+                            div(ng-show="tagForm[field.name].$dirty && tagForm[field.name].$invalid || view.validateTag && tagForm[field.name].$error.required")
+                                p(translate='Required').error
+            div(ng-if="view.hasSelectedCustomTemplate()")
+                .form-group(ng-class="{'has-error': (#{FORM_NAME}.#{CODE_FORM_FIELD}.$dirty && #{FORM_NAME}.#{CODE_FORM_FIELD}.$invalid) || (view.validateTag && #{FORM_NAME}.#{CODE_FORM_FIELD}.$error.required)}")
+                    label(class="control-label")
+                        | {{'Tag HTML'|translate}}
+                        span.important *
+                        cc-help(placement="right" content="{{'Paste your tag’s HTML code (snippet) here. You don’t need to put it directly into your website’s code anymore. Just set it here.'|translate}}")
+                    .container-fluid.tag-editor-panel(
+                        ng-class="{ 'code-editor-focused' : view.isCodeEditorFocused, 'has-variables' : view.hasVariables() }"
+                    )
+                        .row
+                            .tag-editor-panel-editor(
+                                ng-class="{ 'col-sm-8' : view.hasVariables(), 'col-sm-12' : !view.hasVariables() }"
+                            )
+                                textarea#tag-form-html.form-control(
+                                    name=CODE_FORM_FIELD,
+                                    placeholder='{{"Place the code"|translate}}',
+                                    ng-required="true && view.hasSelectedCustomTemplate()",
+                                    ng-disabled="!currentContainer.$container.hasPermission('edit')",
+                                    ng-model="view.tag.code",
+                                    ui-refresh="true",
+                                    ui-codemirror,
+                                    ui-codemirror-opts="TextEditorConfig.getConfig(view.textEditorConfig)"
+                                )
+                            .col-sm-4.tag-editor-panel-variables-list(
+                                ng-if="view.hasVariables()"
+                            )
+                                label(class="control-label")
+                                    | {{'Variables'|translate}}
+                                    i.help-tooltip(
+                                        ng-init="active = false"
+                                        ng-mouseenter="active = true"
+                                        ng-mouseleave="active = false"
+                                        ng-class="{ 'icon-info-fill': active, 'icon-info-circle': !active }"
+                                        tooltip-append-to-body="true"
+                                        tooltip-placement="left"
+                                        tooltip-html-unsafe="{{'You can use previously defined variables in the tag code. Simply choose one from the list.'|translate}}"
+                                        tooltip-class="help-tooltip-wrapper"
+                                    )
+                                ul.list-inline
+                                    li.label-list(
+                                        ng-repeat="variable in view.variables",
+                                        id="code-variable-list-row-{{ variable.id }}-name",
+                                        ng-click="insertVariableIntoCode(variable)"
+                                    )
+                                        span.label.label-default.text-left.link(
+                                            title="{{ variable.name }}"
+                                        )
+                                            | {{ variable.name | limitTo : 30 }}{{variable.name.length > 30 ? '...' : ''}}
+                    +required(FORM_NAME, CODE_FORM_FIELD, "view.validateTag")#tag-form-html
+            .single-checkbox(ng-if="view.hasSelectedCustomTemplate()")
+                .form-group
+                    .checkbox
+                        label
+                            input(type="checkbox", cc-checkbox, ng-disabled="!currentContainer.$container.hasPermission('edit') || view.isTagTemplateTabActive('sync')", name="view.tag.documentWrite", ng-model="view.tag.documentWrite")#tag-form-documentWrite
+                            | {{'Enable document.write'|translate}}
+            .single-checkbox
+                .form-group
+                    .checkbox#checkbox-respectVisitorsPrivacy
+                        label
+                            input(type="checkbox", cc-checkbox, ng-disabled="!currentContainer.$container.hasPermission('edit') || !view.currentTemplateAllowsToSetRVP()", name="view.tag.respectVisitorsPrivacy", ng-model="view.tag.respectVisitorsPrivacy")#tag-form-respectVisitorsPrivacy
+                            | {{'Respect visitors privacy'|translate}}
+                        cc-help(
+                            ng-if="view.currentTemplateAllowsToSetRVP()"
+                            placement="right"
+                            content="{{'Check this checkbox if you want to mark this tag as a \"Tracking tag\" and you want to respect your visitors’ privacy preferences either expressed by:'|translate}}" + " <br> " +
+                                "{{'- selecting the Do Not Track option in their web browser.'|translate}}" + " <br> " +
+                                "{{'and/or'|translate}}" + " <br> " +
+                                "{{'- explicitly opting out from being tracked. Go to \"7tag options\" &rarr; \"Opt-out message generator\" to learn more about the opt-out feature.'|translate}}",
+                        )
+                        cc-help(
+                            ng-if="!view.currentTemplateAllowsToSetRVP()"
+                            placement="right"
+                            content="{{'This is not a tracking tag, therefore this option is disabled.'|translate}}"
+                        )
+        .stepper-step(
+            ng-if="view.displayStepsAfterFirst",
+            ng-init="view.advancedSettings = false",
+            ng-class="{'stepper-step-disabled' : !view.advancedSettings}"
+        )
+            .stepper-index.stepper-step-advanced.noselect(ng-click="view.advancedSettings = !view.advancedSettings", ng-class="{'stepper-step-active': view.advancedSettings}")
+                i.icon-arrow-down(ng-class="{'rotate' : view.advancedSettings}")
+            .form-group
+                label.stepper-step-advanced-label(translate='Advanced settings', class="control-label", ng-click="view.advancedSettings = !view.advancedSettings")
+                div(ng-show="view.advancedSettings")
+                    +field_number(
+                        FORM_NAME,
+                        "view.tag.priority",
+                        PRIORITY_FORM_FIELD,
+                        '{{"Priority"|translate}}',
+                        "view.validateTag",
+                        "{{'Set priority if you want to fire tags in a specific order. By default, tags are fired in any order.'|translate}}" + "<br>" + "{{'Please note – The bigger the value, the higher the priority. Tags are always fired asynchronously.'|translate}}"
+                    )#tag-form-priority(
+                        min=0,
+                        ng-required="true",
+                        placeholder="{{'Set priority'|translate}}",
+                        ng-disabled="!currentContainer.$container.hasPermission('edit')"
+                    )
+                    .single-checkbox
+                        .form-group
+                            .checkbox
+                                label
+                                    input(type="checkbox", cc-checkbox, ng-disabled="!currentContainer.$container.hasPermission('edit')", name="view.tag.isActive", ng-model="view.tag.isActive")#tag-form-deactivate
+                                    | {{'Activate tag'|translate}}
+                    .single-checkbox
+                        .form-group
+                            .checkbox
+                                label
+                                    input(type="checkbox", cc-checkbox, ng-disabled="!currentContainer.$container.hasPermission('edit')", name="view.tag.disableInDebugMode", ng-model="view.tag.disableInDebugMode")#tag-form-disableInDebugMode
+                                    | {{'Do not fire in a debug mode'|translate}}
+div(
+    ng-init="view.showTriggerForm = false; view.validateTag = false; view.validateTriggers = false; view.triggerId = false; view.editTriggerForm = false;"
+)
+    .stepper-step(ng-if="view.displayStepsAfterFirst")
+        .stepper-index
+            span 3
+        .form-group
+            label(translate='Fires on')
+            cc-help(
+                placement="right"
+                content="{{'Choose or create a new trigger(s) to specify how and when you want to fire the tag.'|translate}}"
+            )
+        .stepper-subform(
+            ng-if="view.showTriggerForm && view.isTagTemplateTabActive('async')"
+            ng-controller=TRIGGER_MODULE_NAME + ".CreateController as triggerForm"
+        )
+            +form(
+                TRIGGER_CREATE_FORM
+            )(stg-form, form-resource="#{TRIGGER_CREATE_RESOURCE}")
+                - TRIGGER_FORM_NAME = TRIGGER_CREATE_FORM
+                include ../../trigger/views/_form.jade
+                .form-group
+                    +button('primary')#trigger-form-add-related-tag-button(translate='Add', ng-click="triggerForm.validateTrigger(#{TRIGGER_CREATE_FORM}) ? triggerForm.addTrigger(#{FORM_NAME}, triggerForm.trigger) : triggerForm.displayInvalidFormMessage(view)")
+                    +button#trigger-form-cancel-button(translate='Cancel', ng-click="view.showTriggerForm = triggerForm.leaveFormInsideTag()")
+        .stepper-subform(
+            ng-if="view.showTriggerForm && view.isTagTemplateTabActive('sync')"
+            ng-controller=TRIGGER_MODULE_NAME + ".CreateController as triggerForm"
+        )
+            +form(
+                TRIGGER_CREATE_FORM
+            )(stg-form, form-resource="#{TRIGGER_CREATE_RESOURCE}")
+                - TRIGGER_FORM_NAME = TRIGGER_CREATE_FORM
+                include ../../trigger/views/_form.jade
+                .form-group
+                    +button('primary')#trigger-form-add-related-tag-button(translate='Add', ng-click="triggerForm.trigger.type=0;triggerForm.validateTrigger(#{TRIGGER_CREATE_FORM}) ? triggerForm.addTrigger(#{FORM_NAME}, triggerForm.trigger) : triggerForm.displayInvalidFormMessage(view)")
+                    +button#trigger-form-cancel-button(translate='Cancel', ng-click="view.showTriggerForm = triggerForm.leaveFormInsideTag()")
+
+        .stepper-subform(
+            ng-if="view.editTriggerForm",
+            ng-init="triggerForm.initTrigger(view.triggerId)",
+            ng-controller=TRIGGER_MODULE_NAME + ".EditInsideTagController as triggerForm",
+            cg-busy="{promise:triggerForm.triggerPromise, message:'Loading', backdrop:true, delay:0, minDuration:0}"
+        )
+            +form(
+                TRIGGER_EDIT_FORM
+            )(stg-form, form-resource="#{TRIGGER_EDIT_RESOURCE}")
+                - TRIGGER_FORM_NAME = TRIGGER_EDIT_FORM
+                include ../../trigger/views/_form.jade
+                .form-group
+                    +button('primary')#trigger-form-edit-button(translate='Save', ng-if="currentContainer.$container.hasPermission('edit')" ng-click="triggerForm.validateTrigger(#{TRIGGER_EDIT_FORM}, view.conditionLength) ? triggerForm.submitForm(triggerForm.trigger) : view.validateTriggers = true")
+                    +button(translate='Cancel')(ng-click="view.editTriggerForm = false")
+
+        .stepper-subform(
+            ng-if="view.showListTriggersForm",
+        )
+            .pageview-triggers-sync-tags-warning(ng-if="view.isTagTemplateTabActive('sync')")
+                p {{"Please note, synchronous tags are compatible only with triggers of \"Page view\" type."|translate}}
+                p {{"Triggers of other types will not be displayed here."|translate}}
+            include ../../trigger/views/chooseExisting.jade
+
+        div(
+            ng-if="!view.showTriggerForm && !view.showListTriggersForm && !view.editTriggerForm"
+        )
+            .form-group(ng-if="currentContainer.$container.hasPermission('edit')")
+                +button('primary')#trigger-create-new-trigger-button(translate='+ Add a new trigger', ng-click="view.showAddNewTriggerForm()")
+                +button('primary')#trigger-add-existing-trigger-button(translate='Choose an existing trigger', ng-click="view.showExistingTriggers()")
+            .form-group(ng-if="view.tag.triggers.length")
+                label.control-label(translate='Added triggers', ng-if="currentContainer.$container.hasPermission('edit')")
+                p.alert.alert-synchronous-tag-warning(ng-if="view.isTagTemplateTabActive('sync') && view.tag.triggers.length > 0 && view.hasTriggersNotAssignableToSyncTags()")
+                    | {{"At least one of the added triggers has different type then \"Page View\". Synchronous tags can only use triggers of \"Page View\" type."|translate}}
+                ul.list-inline
+                    li.label-list.trigger-label-list-item(
+                        ng-repeat="trigger in view.tag.triggers track by trigger.id",
+                        id="trigger-list-row-{{ trigger.id }}-name"
+                    )
+                        span.label.label-default.text-left.link(
+                            ng-click="view.triggerId = trigger.id; view.editTriggerForm = true;",
+                            title="{{ trigger.name }}"
+                        )
+                            | {{ trigger.name | limitTo : 30 }}{{trigger.name.length > 30 ? '...' : ''}}
+                            i.icon-close-fill(
+                                id="trigger-list-row-{{ trigger.id }}-action-delete",
+                                ng-if="currentContainer.$container.hasPermission('edit')",
+                                ng-click="view.tag.removeTrigger(trigger)",
+                            )
+    p.alert.alert-synchronous-tag-warning(ng-if="view.displayStepsAfterFirst && view.isTagTemplateTabActive('sync')")
+        | {{"Please remember to embed container code dedicated for synchronous tags. To find the code, go to container's options."|translate}}
+        | <br>
+        | {{"To debug synchronous tags, first you need to publish a container."|translate}}

@@ -1,0 +1,7 @@
+users:
+    resource: "@SevenTagUserBundle/Controller/UserRestController.php"
+    type:     rest
+
+resetting:
+    resource: "@SevenTagUserBundle/Controller/ResettingPasswordRestController.php"
+    type:     rest

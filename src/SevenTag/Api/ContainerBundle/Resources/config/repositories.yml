@@ -1,0 +1,14 @@
+services:
+    seven_tag_container.repository.container_repository:
+        class: SevenTag\Api\ContainerBundle\Entity\ContainerRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - SevenTag\Api\ContainerBundle\Entity\Container
+
+    seven_tag_container.repository.container_permissions_repository:
+        class: SevenTag\Api\ContainerBundle\Entity\ContainerPermissionRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments:
+            - SevenTag\Api\ContainerBundle\Entity\ContainerPermission

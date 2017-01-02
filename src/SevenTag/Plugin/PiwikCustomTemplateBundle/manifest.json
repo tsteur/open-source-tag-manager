@@ -1,0 +1,8 @@
+{
+  "name": "seventag_plugin_piwik_custom_template",
+  "version": "1.0.0",
+  "assets-js": [
+    {"path": "js/stgPiwik.js", "target": "bottom", "externalPath": false}
+  ],
+  "containerjs-configs": []
+}

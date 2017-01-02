@@ -1,0 +1,54 @@
+imports:
+    - { resource: services.yml }
+    - { resource: config.yml }
+
+framework:
+    router:
+        resource: "%kernel.root_dir%/config/routing_install.yml"
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    form:
+        resources: ['bootstrap_3_layout.html.twig']
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    bundles:        [ ]
+    filters:
+        cssrewrite: ~
+
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: seventag
+    database_user: root
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    mailer_spool: { type: file, path: '%kernel.root_dir%/spool' }
+    mailer_delivery_address: null
+    locale: en
+    secret: '&-2_W\$/N=auNLuE?NM6:G:w-V{5,_'
+    datetime_default_format: 'Y-m-d\TH:i:sO'
+    seventag_licence_template_path: '%kernel.root_dir%/Resources/container-lib/licence.dist'
+    seventag_tagtree_template_path: '%kernel.root_dir%/Resources/container-lib/tagTree.js.dist'
+    seventag_tagtree_sync_template_path: '%kernel.root_dir%/Resources/container-lib-sync/tagTree.js.dist'
+    seventag_javascript_library_path: '%kernel.root_dir%/Resources/container-lib/library.js.dist'
+    seventag_javascript_library_sync_path: '%kernel.root_dir%/Resources/container-lib-sync/library.js.dist'
+    seventag_javascript_debugger_path: '%kernel.root_dir%/../web/container-debugger/debug.js'
+    seventag_javascript_debugger_hostname: 'http://yourhostname.com'
+    seventag_javascript_cache_dir: '%kernel.root_dir%/../web/containers'
+    seventag_javascript_bootstrap_path: '%kernel.root_dir%/Resources/container-lib/bootstrap.js.dist'
+    seventag_javascript_bootstrap_sync_path: '%kernel.root_dir%/Resources/container-lib-sync/bootstrap.js.dist'
+    sentry_dsn: ~
+    web_dir: '%kernel.root_dir%/../web'
+    seventag_javascript_url_template: ~
+    seventag_javascript_synchronous_url_template: ~
+    seventag_javascript_noscript_url_template: ~

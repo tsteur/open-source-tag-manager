@@ -1,0 +1,173 @@
+mixin min(form, name)
+    div(ng-show="#{form}.#{name}.$error.minlength && #{form}.#{name}.$dirty", id=attributes.id + "-validation-message")
+        p(translate="Too short").error
+
+mixin max(form, name)
+    div(ng-show="#{form}.#{name}.$error.maxlength && #{form}.#{name}.$dirty", id=attributes.id + "-validation-message")
+        p(translate="Too long").error
+
+mixin maxValue(form, name, value)
+    div(id=attributes.id + "-validation-message" ng-show="(#{form}.#{name}.$viewValue > #{value})")
+        p(translate="Invalid value. Please enter lower value.").error
+
+mixin required(form, name, force)
+    div(id=attributes.id + "-validation-message" ng-show="(#{form}.#{name}.$error.required && #{form}.#{name}.$dirty) || (#{force} && #{form}.#{name}.$error.required)")
+        p(translate="Required").error
+
+mixin number(form, name, force)
+    div(id=attributes.id + "-validation-message" ng-show="(#{form}.#{name}.$error.number && #{form}.#{name}.$dirty) || (#{force} && #{form}.#{name}.$error.number)")
+        p(translate="Invalid value. Please enter a number.").error
+
+mixin positive(form, name)
+    div(id=attributes.id + "-validation-message" ng-show="(#{form}.#{name}.$viewValue < 0)")
+        p(translate="Invalid value. Please enter a positive number.").error
+
+mixin serverValidation(form, name)
+    div(id=attributes.id + "-validation-message" ng-show="#{form}.#{name}.$error.#{name}")
+        p.error(ng-repeat="error in #{form}.#{name}.$error.#{name}") {{ error|translate }}
+
+mixin field_text(form, model, name, label, force, helper)
+    if !force
+        - force = false
+    .form-group(
+        ng-class="{'has-error': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required) || #{form}.#{name}.$error.#{name}, 'has-feedback': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required)}"
+    )
+        label(class="control-label") !{label}
+        if helper
+            cc-help(
+            placement="right"
+            content= "#{helper}",
+        )
+        input(type="text", name=name, ng-model=model, ng-keypress="#{form}.#{name}.$error.#{name} !== undefined ? #{form}.#{name}.$error = {} : ''")&attributes(attributes).form-control
+        span.form-control-feedback.icon-close(ng-if="(#{FORM_NAME}.$submitted && #{FORM_NAME}.viewAuthPassword.$invalid)")
+        if typeof(attributes['ng-required']) !== 'undefined'
+            +required(form, name, force)(id=attributes.id)
+        if typeof(attributes['ng-minlength']) !== 'undefined'
+            +min(form, name)(id=attributes.id)
+        if typeof(attributes['ng-maxlength']) !== 'undefined'
+            +max(form, name)(id=attributes.id)
+        +serverValidation(form, name)
+
+mixin field_number(form, model, name, label, force, helper)
+    if !force
+        - force = false
+    .form-group(
+        ng-class="{'has-error': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required) || #{form}.#{name}.$error.#{name}, 'has-feedback': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required)}"
+    )
+        label(class="control-label") !{label}
+        if helper
+            cc-help(
+            placement="right"
+            content= "#{helper}",
+        )
+        input(type="number", name=name, ng-model=model, ng-keypress="#{form}.#{name}.$error.#{name} !== undefined ? #{form}.#{name}.$error = {} : ''")&attributes(attributes).form-control
+        span.form-control-feedback.icon-close(ng-if="(#{FORM_NAME}.$submitted && #{FORM_NAME}.viewAuthPassword.$invalid)")
+        if typeof(attributes['ng-required']) !== 'undefined'
+            +required(form, name, force)(id=attributes.id)
+        +number(form, name, force)(id=attributes.id)
+        if typeof(attributes['min']) !== 'undefined'
+            +positive(form, name)(id=attributes.id)
+        if typeof(attributes['max']) !== 'undefined'
+            +maxValue(form, name, attributes['max'])(id=attributes.id)
+        +serverValidation(form, name)
+
+mixin field_number_unit(form, model, name, label, force, helper, unit)
+    if !force
+        - force = false
+    .form-group(
+        ng-class="{'has-error': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required) || #{form}.#{name}.$error.#{name}, 'has-feedback': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required)}"
+    )
+        label(class="control-label") !{label}
+        if helper
+            cc-help(
+            placement="right"
+            content= "#{helper}",
+        )
+        .input-group
+            input(type="number", aria-describedby="#{name}.#{unit}", name=name, ng-model=model, ng-keypress="#{form}.#{name}.$error.#{name} !== undefined ? #{form}.#{name}.$error = {} : ''")&attributes(attributes).form-control
+            span.input-group-addon(id="#{name}.#{unit}") !{unit}
+        span.form-control-feedback.icon-close(ng-if="(#{FORM_NAME}.$submitted && #{FORM_NAME}.viewAuthPassword.$invalid)")
+        if typeof(attributes['ng-required']) !== 'undefined'
+            +required(form, name, force)(id=attributes.id)
+        +number(form, name, force)(id=attributes.id)
+        if typeof(attributes['min']) !== 'undefined'
+            +positive(form, name)(id=attributes.id)
+        if typeof(attributes['max']) !== 'undefined'
+            +maxValue(form, name, attributes['max'])(id=attributes.id)
+         +serverValidation(form, name)
+
+mixin field_textarea(form, model, name,label, force, helper)
+    if !force
+        - force = false
+    .form-group(ng-class="{'has-error': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required)}")
+        label(class="control-label") !{label}
+        if helper
+            cc-help(
+            placement="right"
+            content= "#{helper}",
+        )
+        textarea(name=name, ng-model=model)&attributes(attributes).form-control
+        if typeof(attributes['ng-required']) !== 'undefined'
+            +required(form, name, force)(id=attributes.id)
+        if typeof(attributes['ng-minlegnth']) !== 'undefined'
+            +min(form, name)(id=attributes.id)
+        if typeof(attributes['ng-maxlength']) !== 'undefined'
+            +max(form, name)(id=attributes.id)
+
+mixin field_password(form, model, name, label, force)
+    if !force
+        - force = false
+    .form-group(ng-class="{'has-error': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required), 'has-feedback': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required)}")
+        label(class="control-label", ng-class="{'error': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required)}") !{label}
+        input(type="password", name=name, ng-model=model, ng-keypress="#{form}.#{name}.$error.#{name} !== undefined ? #{form}.#{name}.$error = {} : ''")&attributes(attributes).form-control
+        if typeof(attributes['ng-required']) !== 'undefined'
+            +required(form, name, force)
+        if typeof(attributes['ng-minlength']) !== 'undefined'
+            +min(form, name)
+        if typeof(attributes['ng-maxlength']) !== 'undefined'
+            +max(form, name)
+        +serverValidation(form, name)
+
+mixin field_email(form, model, name, label, force)
+    if !force
+        - force = false
+    .form-group(ng-class="{'has-error': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid && #{form}.#{name}.$touched) || (#{form}.#{name}.$error.required && #{form}.#{name}.$touched) || (#{force} && #{form}.#{name}.$error.required), 'has-feedback': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required)}")
+        label(class="control-label", ng-class="{'error': (#{form}.#{name}.$dirty && #{form}.#{name}.$invalid) || (#{force} && #{form}.#{name}.$error.required)}") !{label}
+        input(type="email", name=name, ng-model=model, ng-keypress="#{form}.#{name}.$error.#{name} !== undefined ? #{form}.#{name}.$error = {} : ''")&attributes(attributes).form-control
+        div(ng-if="#{form}.$error.email && #{form}.#{name}.$touched")
+            p(translate="Invalid email address").error
+        if typeof(attributes['ng-required']) !== 'undefined'
+            +required(form, name, force)(id=attributes.id)
+        +serverValidation(form, name)
+
+mixin field_checkbox(form, name, label, helper)
+    .form-group
+        .checkbox
+            label
+                input(type="checkbox", cc-checkbox, name=name, ng-model=name)
+                | #{label}
+                if helper
+                    cc-help(
+                    placement="right"
+                    content= "#{helper}",
+                )
+
+mixin field_radio(form, name, label, value)
+    div
+        label
+            input(type="radio", cc-radio, name=name, ng-model=name,  cc-radio-model=name, value=value)
+            | #{label}
+
+
+mixin field_file(form, name, label)
+    .form-group
+        label()= label
+        input(type="file", name=name, ng-model=name).form-control
+
+
+mixin field_submit(form, label)
+    input(type="submit", value=label)&attributes(attributes).btn.btn-primary
+
+mixin form(form)
+    form(name=form, novalidate)&attributes(attributes)
+        block

@@ -1,0 +1,1 @@
+(function(stg){stg=window.sevenTagSync=stg||{};stg.tagTree=##tagTree##;stg.debugOptions=##debugOptions##;stg.variables=##variables##;stg.configuration=##containerJsConfig##;}(window.sevenTagSync));

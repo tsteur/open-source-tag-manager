@@ -1,0 +1,99 @@
+services:
+
+  seven_tag_container.container_library.template_loader.licence_loader:
+      class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Loader\FileLoader
+      public: false
+      arguments: [%seventag_licence_template_path%]
+
+  seven_tag_container.container_library.template_loader.tag_tree_loader:
+      class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Loader\FileLoader
+      public: false
+      arguments: [%seventag_tagtree_template_path%]
+
+  seven_tag_container.container_library.template_loader.library_loader:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Loader\FileLoader
+    public: false
+    arguments: [%seventag_javascript_library_path%]
+
+  seven_tag_container.container_bootstrap.template_loader.library_loader:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Loader\FileLoader
+    public: false
+    arguments: [%seventag_javascript_bootstrap_path%]
+
+  seven_tag_container.container_library.template_loader.container_debugger:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Loader\FileLoader
+    public: false
+    arguments: [%seventag_javascript_debugger_path%]
+
+  seven_tag_container.container_library.template_loader:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Loader\ChainLoader
+    calls:
+      - [ add, ['@seven_tag_container.container_library.template_loader.licence_loader', 5] ]
+      - [ add, ['@seven_tag_container.container_library.template_loader.tag_tree_loader', 4] ]
+      - [ add, ['@seven_tag_container.container_library.template_loader.library_loader', 3] ]
+      - [ add, ['@seven_tag_container.container_bootstrap.template_loader.library_loader', 1] ]
+      - [ add, ['@seven_tag_container.container_library.template_loader.container_debugger', 0] ]
+
+  seven_tag_container.container_library.template_handler.debugger:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Handler\DebuggerHandler
+    arguments: [@seven_tag_container.mode_resolver]
+    public: false
+
+  seven_tag_container.container_library.template_handler.tag_tree:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Handler\TagTreeHandler
+    public: false
+    arguments: [@seven_tag_container.tag_tree_builder_async]
+
+  seven_tag_container.container_library.template_handler.containerjs:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Handler\ContainerJsHandler
+    arguments: [%seventag_domain%]
+    public: false
+
+  seven_tag_container.container_library.template_handler.variables:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Handler\VariablesHandler
+    arguments: [@seven_tag_variable.variable_manager, @jms_serializer.serializer]
+    public: false
+
+  seven_tag_container.container_library.template_handler:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Handler\ChainHandler
+    calls:
+      - [ add, ['@seven_tag_container.container_library.template_handler.debugger', 1] ]
+      - [ add, ['@seven_tag_container.container_library.template_handler.tag_tree', 2] ]
+      - [ add, ['@seven_tag_container.container_library.template_handler.containerjs', 1] ]
+      - [ add, ['@seven_tag_container.container_library.template_handler.variables', 2] ]
+      - [ add, ['@seven_tag_container.container_library.template_handler.containerjs_config', 1] ]
+
+  seven_tag_container.container_library.template_handler_privacy:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Template\Handler\ChainHandler
+    calls:
+      - [ add, ['@seven_tag_container.container_library.template_handler.debugger', 1] ]
+      - [ add, ['@seven_tag_container.container_library.template_handler.tag_tree', 2] ]
+      - [ add, ['@seven_tag_container.container_library.template_handler.containerjs', 1] ]
+      - [ add, ['@seven_tag_container.container_library.template_handler.variables', 2] ]
+      - [ add, ['@seven_tag_container.container_library.template_handler.optout_config', 1] ]
+
+  seven_tag_container.container_library.generator:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Generator\TemplateGenerator
+    arguments: [@seven_tag_container.container_library.template_loader, @seven_tag_container.container_library.template_handler]
+
+  seven_tag_container.container_library_privacy.generator:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Generator\TemplateGenerator
+    arguments: [@seven_tag_container.container_library.template_loader, @seven_tag_container.container_library.template_handler_privacy]
+
+  seven_tag_container.subscriber.storage_javascript_in_filesystem_subscriber:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Subscriber\StorageJavascriptInFilesystemSubscriber
+    arguments: [ @seven_tag_container.container_library.generator, @gaufrette.container_library, '%s.js', @?seven_tag_container.container_library.cdn ]
+    tags:
+      - { name: kernel.event_subscriber }
+
+  seven_tag_container.subscriber.storage_javascript_in_filesystem_privacy_subscriber:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Subscriber\StorageJavascriptInFilesystemSubscriber
+    arguments: [ @seven_tag_container.container_library_privacy.generator, @gaufrette.container_library, '%s.privacy.js', @?seven_tag_container.container_library.cdn ]
+    tags:
+      - { name: kernel.event_subscriber }
+
+  seven_tag_container.subscriber.storage_tagtree_in_filesystem_subscriber:
+    class: SevenTag\Api\ContainerBundle\ContainerLibrary\Subscriber\StorageTagTreeInFilesystemSubscriber
+    arguments: [ @seven_tag_container.tag_tree_builder_async, @gaufrette.container_library ]
+    tags:
+      - { name: kernel.event_subscriber }

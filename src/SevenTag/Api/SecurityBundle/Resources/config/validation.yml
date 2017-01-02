@@ -1,0 +1,9 @@
+SevenTag\Api\SecurityBundle\Entity\Integration:
+  properties:
+    name:
+      - NotBlank: { groups: [CreateIntegration, EditIntegration] }
+      - Length:
+          max: 255
+          groups: [CreateIntegration, EditIntegration]
+    user:
+      - Valid: ~

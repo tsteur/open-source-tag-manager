@@ -1,0 +1,97 @@
+(function (window, document) {
+    var optOutParameterName = '_stg_opt_out_iframe',
+        optOutCookieName = '_stg_optout',
+        optOutCheckboxId = '_stg_optout_checkbox',
+        optOutCheckboxLabelId = '_stg_optout_checkbox_label',
+        optoutReadValueUrl = '/containers/privacy/global-opt-out/v2',
+        optoutSetValueUrl = '/containers/privacy/global-opt-out/v2/';
+
+    var optedInCheckboxText = window.sevenTag.optedInCheckboxText || 'You are currently opted in. Click here to opt out.',
+        optedOutCheckboxText = window.sevenTag.optedOutCheckboxText || 'You are currently opted out. Click here to opt in.';
+
+    window.onload = function () {
+        initWithCurrentOptoutValue();
+    };
+
+    window.storeUserOptOutPreferences = function () {
+        var expiresDate = 60 * 60 * 24 * 365,
+            isOptedOut = getCheckboxElement().checked;
+        setOptOutCookie(isOptedOut, expiresDate);
+        updateOptoutDisplay(isOptedOut);
+    };
+
+    function initWithCurrentOptoutValue () {
+        if (window.sevenTag.isGlobal) {
+            var http = getSeventagHttpLibrary(),
+                requestConfig = {
+                    method: 'GET',
+                    url: "//" + window.sevenTag.instanceHostname + optoutReadValueUrl,
+                    async: true
+                };
+            http(requestConfig, onCurrentOptoutValueRead);
+        } else {
+            var statusObject = {
+                status: getDomainOptoutCookie() === 'true'
+            };
+            onCurrentOptoutValueRead(statusObject);
+        }
+    }
+
+    function onCurrentOptoutValueRead (data) {
+        getOptoutFrameElement().style.display = 'block';
+        getCheckboxElement().checked = data.status;
+        updateOptoutDisplay(data.status);
+    }
+
+    function getOptoutSetUrl (isOptedOut) {
+        return optoutSetValueUrl + (isOptedOut ? 1 : 0);
+    }
+
+    function getSeventagHttpLibrary () {
+        return window.sevenTag.$injector.get('$http');
+    }
+
+    function updateOptoutDisplay (isChecked) {
+        var labelElement = document.getElementById(optOutCheckboxLabelId);
+        labelElement.innerHTML = isChecked ? optedOutCheckboxText : optedInCheckboxText;
+
+        var cssClassFromState = isChecked ? 'stg-opted-out' : 'stg-opted-in';
+        getOptoutFrameElement().className = cssClassFromState;
+    }
+
+    function getCheckboxElement () {
+        return document.getElementById(optOutCheckboxId);
+    }
+
+    function getOptoutFrameElement () {
+        return document.getElementById(optOutParameterName + '_content');
+    }
+
+    function setOptOutCookie (isOptedOut, expires) {
+        if (window.sevenTag.isGlobal) {
+            var img = new Image();
+            img.src = "//" + window.sevenTag.instanceHostname + getOptoutSetUrl(isOptedOut);
+            window.sevenTag.configuration.stg_global_opt_out = isOptedOut;
+        } else {
+            var date = new Date();
+            date.setTime(date.getTime() + (expires * 1000));
+            document.cookie = optOutCookieName + '=' + isOptedOut + '; expires=' + date.toGMTString() + '; path=/';
+        }
+    }
+
+    function getDomainOptoutCookie () {
+        var re = new RegExp(optOutCookieName + '=([^;]+)'),
+            cookieValue = re.exec(document.cookie);
+        if (!cookieValue || !cookieValue[1]) {
+            return;
+        }
+
+        cookieValue = cookieValue[1];
+
+        if (cookieValue.charAt(0) === '"') {
+            cookieValue = cookieValue.slice(1, -1);
+        }
+
+        return cookieValue;
+    }
+})(window, document);

@@ -1,0 +1,21 @@
+include ../../../views/_mixins.jade
+
+- var LOADING_PROMISE = 'view.containerPromise';
+- var FORM_TITLE = 'Debug options';
+- var GENERAL_FORM_NAME = 'debugOptionsForm';
+- var WEBSITES_FORM_NAME = 'editContainerWebsitesForm';
+- var FORM_NAME = 'debugOptionsForm';
+
+.row
+    cc-breadcrumb(ng-hide="view.success")
+.row
+    .panel.panel-default(cg-busy="{promise: #{LOADING_PROMISE}, templateUrl: \"app/views/loader.html\"}")
+        .panel-body
+            h4.form-heading(ng-hide="view.success")
+                | {{"Websites with installed container"|translate}}
+                cc-help(
+                    placement="right"
+                    content="{{'Please enter URLs of your website(s), on which you implemented the container. You can also select the way in which the debug URL parameter is appended - through hash or as parameter.'|translate}}",
+                )
+
+            include websites.jade

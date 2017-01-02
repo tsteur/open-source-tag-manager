@@ -1,0 +1,11 @@
+{% block subject %}
+{% autoescape false %}
+{{ 'registration.resetting.subject'|trans({'%firstName%': user.firstName, '%confirmationUrl%': confirmationUrl}, 'emails') }}
+{% endautoescape %}
+{% endblock %}
+{% block body_text %}
+{% autoescape false %}
+{{ 'registration.resetting.message'|trans({'%firstName%': user.firstName, '%confirmationUrl%': confirmationUrl}, 'emails') }}
+{% endautoescape %}
+{% endblock %}
+{% block body_html %}{% endblock %}

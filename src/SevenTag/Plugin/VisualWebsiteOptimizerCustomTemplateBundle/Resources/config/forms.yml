@@ -1,0 +1,5 @@
+services:
+    seven_tag_plugin_visual_website_optimizer_custom_template.form_type.visual_website_optimizer:
+        class: SevenTag\Plugin\VisualWebsiteOptimizerCustomTemplateBundle\Form\VisualWebsiteOptimizerTemplateFormType
+        tags:
+            - { name: form.type, alias: visual_website_optimizer_template_form_type }

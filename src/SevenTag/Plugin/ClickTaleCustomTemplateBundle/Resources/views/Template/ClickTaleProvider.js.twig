@@ -1,0 +1,6 @@
+<script type='text/javascript'>
+    document.write(unescape("%3Cscript%20src='"+
+            (document.location.protocol=='https:'?
+                    'https://cdnssl.clicktale.net/' + {{ partition|variable|raw }} + '/ptc/' + {{ guid|variable|raw }} + '.js':
+                    'http://cdn.clicktale.net/' + {{ partition|variable|raw }} + '/ptc/' + {{ guid|variable|raw }} + '.js')+"'%20type='text/javascript'%3E%3C/script%3E"));
+</script>

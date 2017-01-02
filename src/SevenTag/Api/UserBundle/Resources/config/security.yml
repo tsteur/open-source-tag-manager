@@ -1,0 +1,5 @@
+services:
+    seven_tag_user.user_provider.email:
+        class: SevenTag\Api\UserBundle\Security\EmailProvider
+        public: false
+        arguments: [@fos_user.user_manager]

@@ -1,0 +1,36 @@
+parameters:
+    fos_oauth_server.security.authentication.listener.class: SevenTag\Api\SecurityBundle\Security\Firewall\OAuthListener
+
+services:
+    seven_tag_security.serializer.admin_containers_permissions_subscriber:
+        class: SevenTag\Api\SecurityBundle\Serializer\Subscriber\AdminUserPermissionsSubscriber
+        parent: seven_tag_security.serializer.containers_permissions.abstract
+        tags:
+            - { name: jms_serializer.event_subscriber }
+
+    seven_tag_security.serializer.non_admin_containers_permissions_subscriber:
+        class: SevenTag\Api\SecurityBundle\Serializer\Subscriber\NonAdminUserSubscriber
+        parent: seven_tag_security.serializer.containers_permissions.abstract
+        arguments: [@seven_tag_security.utils.user_permissions_map_provider]
+        tags:
+            - { name: jms_serializer.event_subscriber }
+
+    seven_tag_security.serializer.container_permissions_subscriber:
+        class: SevenTag\Api\SecurityBundle\Serializer\Subscriber\ContainerPermissionsSubscriber
+        arguments: [@security.token_storage, @seven_tag_security.utils.bitmask_to_permissions_mapper, @seven_tag_security.utils.user_mask_resolver]
+        tags:
+            - { name: jms_serializer.event_subscriber }
+
+    fos_oauth_server.security.authentication.listener:
+        class: SevenTag\Api\SecurityBundle\Security\Firewall\OAuthListener
+        arguments:
+            - @security.context
+            - @security.authentication.manager
+            - @fos_oauth_server.server
+            - @seven_tag_security.security.oauth_token_user_resolver
+
+    seven_tag_security.integration.integration_user_subscriber:
+        class: SevenTag\Api\SecurityBundle\Integration\Listener\IntegrationSubscriber
+        arguments: [@seven_tag_security.integration.user_manipulator]
+        tags:
+            - { name: kernel.event_subscriber }

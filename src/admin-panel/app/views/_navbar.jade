@@ -1,0 +1,136 @@
+include _mixins.jade
+
+header#top.navbar.navbar-static-top.navbar-default.navbar-not-logged(
+        role="banner",
+        ng-class="{'navbar-not-logged': !security.isAuthenticated()}"
+    )
+    .container-fluid
+        // Brand and toggle get grouped for better mobile display
+        .navbar-header
+            button#collapse-button.navbar-toggle.collapsed(
+                type="button",
+                data-toggle="collapse",
+                data-target="#collapse-navbar"
+            )
+                span.sr-only Toggle navigation
+                span.icon-bar
+                span.icon-bar
+                span.icon-bar
+            a#brand.navbar-brand(ui-sref="container")
+                img(src="/app/images/logo.png")
+
+        #navbar-collapse.collapse.navbar-collapse
+            .navbar-nav.container-list#top-container-list(ng-if="isContainerView()", ng-cloak)
+                .navbar-form
+                    .form-group
+                        .navbar-containers.btn-group#top-navbar-menu
+                            +button('primary')#top-menu-icon(
+                                href,
+                                ui-sref="container",
+                                ng-if="security.isAuthenticated()",
+                                class="btn-navbar"
+                            )
+                                i.icon-list
+                            .btn.btn-primary.btn-md.btn-navbar.top-container-name(
+                                ng-class="{'disabled': currentContainerLoading}"
+                            )
+                                span(
+                                    ng-if="currentContainerLoading"
+                                    translate="Loading..."
+                                )
+                                span.cut-text(
+                                    ng-if="!currentContainerLoading",
+                                    title="{{ currentContainer.$container.name }}"
+                                ) {{ currentContainer.$container.name }}
+                    .form-group
+                        .btn-group#top-navbar-publish
+                            +button('publish').btn-block.btn-navbar#top-version-publish(
+                                ng-if="currentContainer.$container.hasPermission('publish')"
+                                ng-click="currentContainer.publish()",
+                                ng-class="{'disabled': currentContainerLoading}",
+                                tooltip-class="help-tooltip-wrapper"
+                                tooltip-placement="bottom"
+                                tooltip="{{'Clicking on this button pushes all the changes to production. It won’t be possible to discard changes after publishing it.'|translate}}"
+                            )
+                                i.icon-publish
+                                span(translate="Publish")
+            .nav.navbar-nav(ng-if="isContainerView() && !currentContainerLoading")
+                .version-info(ng-cloak)
+                    span#top-version-status(ng-if="currentContainer.isPublished()", translate="Published")
+                    span#top-version-status(ng-if="!currentContainer.isPublished()", translate="Draft")
+                    span(ng-if="currentContainer.$container.publishedAt") ,&nbsp;
+                    span(ng-if="currentContainer.$container.publishedAt")#top-version-date {{ currentContainer.$container.publishedAt| date:'yyyy-MM-dd HH:mm' }}
+            .nav.navbar-nav.pull-right#top-profile-settings(ng-if="security.isAuthenticated()", ng-cloak)
+                .navbar-form
+                    .form-group
+                        div(dropdown).user-dropdown.btn-group#top-user-menu
+                            +button('primary')#top-profile-link(
+                                ui-sref="editProfile",
+                                class="btn-navbar user-profile"
+                            )
+                                i.icon-user
+                                span.cut-text {{ security.user.displayName }}
+                            +button('primary')#top-profile-opitons(
+                                href,
+                                dropdown-toggle
+                                ng-if="security.isAuthenticated()",
+                                class="btn-navbar user-menu dropdown-toggle"
+                            )
+                                i.icon-arrow-down
+                            ul.dropdown-menu.user-dropdown-menu(role="menu")
+                                li#user-menu-my-account
+                                    a.user-menu-item(ui-sref="editProfile")
+                                        i.icon-user
+                                        span(translate="My account")
+                                li(ng-if="security.hasRole('ROLE_SUPER_ADMIN')")#user-menu-user-management
+                                    a.user-menu-item(ui-sref="users")
+                                        i.icon-users
+                                        span(translate="User management")
+                                li#user-menu-opt-out
+                                    a.user-menu-item(ui-sref="optOutGenerator")
+                                        i.icon-optout
+                                        span(translate="Opt-out generator")
+                                li(ng-if="security.hasRole('ROLE_SUPER_ADMIN')")#user-menu-integration-settings
+                                    a.user-menu-item(ui-sref="integration")
+                                        i.icon-integrations
+                                        span(translate="Integrations")
+                                li
+                                    a.user-menu-item(ng-click="logout()")#top-profile-logout
+                                        i.icon-logout
+                                        span(translate="Logout")
+
+        #navbar-debug.collapse.navbar-collapse(
+            ng-show="isContainerView()"
+            ng-cloak
+        )
+            .navbar-nav#top-debug-nav(
+                ng-class="{shown: isContainerView() && currentContainer && currentContainer.isDirty()}"
+            )
+                .navbar-form(ng-style="{ 'visibility': currentContainerLoading? 'hidden' : 'visible'}")
+                    .form-group(ng-if="isContainerView() && currentContainer.isDirty()")
+                        .navbar-debug-item
+                            span(translate="Open your website in Preview and debug mode:"                        )
+                        .navbar-debug-item(
+                            ng-cloak,
+                            ng-if="currentContainer.$container && currentContainer.$container.websites && currentContainer.$container.websites.length > 0"
+                        )
+                            a(ng-href="{{ (currentContainer.$container.websites[0]).getUrlWithParameter() }}", target="_blank")
+                                | {{ currentContainer.$container.websites[0].url | limitTo: 32 }}{{ currentContainer.$container.websites[0].url.length > 32 ? '...' : '' }}
+                        .navbar-debug-item
+                            +button('primary', 'sm').btn-block.btn-navbar#top-website-visit(
+                                ng-cloak,
+                                tooltip-class="help-tooltip-wrapper",
+                                tooltip-placement="bottom",
+                                tooltip="{{'Shows shortcuts to all websites this container is used on.'|translate}}",
+                                translate="All websites",
+                                ui-sref="debug({containerId: activeContainerId})"
+                            )
+                        .navbar-debug-item
+                            +button('default', 'sm').btn-block.btn-navbar#top-version-restore(
+                                ng-cloak,
+                                tooltip-class="help-tooltip-wrapper",
+                                tooltip-placement="bottom",
+                                tooltip="{{'Clicking on this button discards all the changes that have been made in the current draft version and reverts back to the last published version.'|translate}}",
+                                ng-disabled="!currentContainer.canRestore()",
+                                translate="Discard draft changes",
+                                ng-click="currentContainer.canRestore() ? currentContainer.restore() : ''")

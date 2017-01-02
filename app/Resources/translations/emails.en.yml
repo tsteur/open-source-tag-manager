@@ -1,0 +1,28 @@
+registration:
+    email:
+        subject: 7tag activation message
+        message: |
+            Hello %firstName%,
+
+            to activate your 7tag account, please click the link below or copy it and paste into your browser:
+            %confirmationUrl%
+
+            We hope you enjoy using 7tag.
+
+            Best Regards,
+            7tag team
+
+            7tag.org
+    resetting:
+        subject: 7tag reset password
+        message: |
+            Hello %firstName%,
+
+            To reset your password - please visit %confirmationUrl%
+
+            We hope you enjoy using 7tag.
+
+            Best Regards,
+            7tag team
+
+            7tag.org

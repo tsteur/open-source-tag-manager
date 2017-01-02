@@ -1,0 +1,56 @@
+mixin jumbotron()
+    .jumbotron
+        block
+
+mixin button(type, size)
+    if !type
+        - type = 'default'
+
+    if !size
+        - size = 'md'
+
+    - var tag = attributes.type === 'submit' ? 'button' : 'a';
+
+    #{tag}(class="btn btn-" + type + " btn-" + size)&attributes(attributes)
+        block
+
+mixin table(name, id, templateHeader)
+    - templateHeader = templateHeader || 'st-header.html'
+    table.table.table-blocks(
+        ng-table=name,
+        id=id,
+        template-pagination="st-pagination.html",
+        ng-hide="!view.tableParams.settings().$loading && view.tableParams.total() === 0"
+        template-header=templateHeader
+    )
+        block
+
+mixin thumbnail(src, alt)
+    if !alt
+        - alt = src
+
+    img.img-thumbnail(
+        data-src=src,
+        alt=alt
+    )&attributes(attributes)
+
+mixin label(type)
+    if !type
+        - type = 'default'
+
+    span(class="label label-" + type)
+        block
+
+mixin badge()
+    span.badge
+        block
+
+mixin dropdown(title)
+    .dropdown(dropdown)&attributes(attributes)
+        +button('default').dropdown-toggle(dropdown-toggle)
+            | #{title}
+            span.caret
+        ul.dropdown-menu(role="menu")
+            block
+
+

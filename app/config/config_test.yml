@@ -1,0 +1,44 @@
+imports:
+    - { resource: services.yml }
+    - { resource: parameters.yml }
+    - { resource: config.yml }
+    - { resource:  @SevenTagTestBundle/Resources/config/client.yml }
+
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    profiler:
+        collect: false
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
+
+swiftmailer:
+    disable_delivery: true
+
+liip_functional_test: ~
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        console:
+            type:  console
+
+doctrine:
+    dbal:
+        driver:   pdo_sqlite
+        host:     127.0.0.1
+        port:     ~
+        dbname:   tag_manager_admin
+        user:     ~
+        password: ~
+        path:     "%kernel.cache_dir%/tag_manager_admin.db3"

@@ -1,0 +1,11 @@
+fos_oauth_server:
+    db_driver:           orm
+    client_class:        SevenTag\Api\SecurityBundle\Entity\Client
+    access_token_class:  SevenTag\Api\SecurityBundle\Entity\AccessToken
+    refresh_token_class: SevenTag\Api\SecurityBundle\Entity\RefreshToken
+    auth_code_class:     SevenTag\Api\SecurityBundle\Entity\AuthCode
+    service:
+        storage: seven_tag_security.oauth_server.storage
+        user_provider: seven_tag_user.user_provider.email
+        options:
+            supported_scopes: user

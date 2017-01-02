@@ -1,0 +1,21 @@
+SevenTag\Api\UserBundle\Entity\User:
+  exclusion_policy: None
+  properties:
+    firstName:
+      expose: true
+      groups: [users]
+    lastName:
+      expose: true
+      groups: [users]
+    createdAt:
+      expose: true
+      groups: [users]
+    language:
+      expose: true
+      groups: [users]
+  virtual_properties:
+    getDisplayName:
+      serialized_name: display_name
+      type: string
+      expose: true
+      groups: [users]

@@ -1,0 +1,9 @@
+SevenTag\Api\SecurityBundle\Entity\Integration:
+    exclusion_policy: all
+    properties:
+        name:
+            expose: true
+            groups: [integration, integrations]
+        user:
+            expose: true
+            groups: [integration, integrations]

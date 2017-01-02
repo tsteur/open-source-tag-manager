@@ -1,0 +1,8 @@
+{
+  "name": "seventag_plugin_sentry",
+  "version": "1.0.0",
+  "assets-js": [
+    {"path": "//cdn.ravenjs.com/1.1.22/jquery,native/raven.min.js", "target": "top", "externalPath": true}
+  ],
+  "containerjs-configs": []
+}

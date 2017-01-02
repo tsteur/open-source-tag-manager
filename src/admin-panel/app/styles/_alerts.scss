@@ -1,0 +1,109 @@
+/**
+ * Copyright (C) 2015 Digimedia Sp. z.o.o. d/b/a Clearcode
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+.alert {
+  font-size: 0.83em;
+  margin-bottom: 27px;
+}
+
+.alert :not.debug-panel {
+  .btn {
+    font-size: 16px;
+    padding: 0px 30px 6px;
+  }
+}
+
+.alert-empty {
+  padding: 75px;
+
+  p.action {
+    padding-top: 30px;
+
+    a {
+      font-size: 17px;
+    }
+  }
+
+  p.cancel {
+    padding: 0px;
+    margin-top: 5px;
+  }
+}
+
+.debug-header {
+    margin-top: 10px;
+
+    div > a {
+        padding: 9px 32px;
+        font-size: 17px;
+        font-weight: 500;
+    }
+}
+
+$alert-top-padding: 15px;
+$alert-top-padding-extended: 20px;
+
+.alert-top {
+    position: absolute;
+    top: 0px;
+    right: 30px;
+    width: 300px;
+    padding-top: $alert-top-padding;
+    padding-bottom: $alert-top-padding;
+    padding-left: $alert-top-padding;
+    padding-right: $alert-top-padding-extended;
+    z-index: 999;
+    cursor: pointer;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+
+    -webkit-transition: -webkit-transform 0.22s cubic-bezier(0.25, 0, 0.25, 1), opacity 0.22s cubic-bezier(0.25, 0, 0.25, 1);
+    -moz-transition: -moz-transform 0.22s cubic-bezier(0.25, 0, 0.25, 1), opacity 0.22s cubic-bezier(0.25, 0, 0.25, 1);
+    -o-transition: -o-transform 0.22s cubic-bezier(0.25, 0, 0.25, 1), opacity 0.22s cubic-bezier(0.25, 0, 0.25, 1);
+    transition: transform 0.22s cubic-bezier(0.25, 0, 0.25, 1), opacity 0.22s cubic-bezier(0.25, 0, 0.25, 1);
+
+    &.ng-enter {
+        opacity: 0;
+        -webkit-transform: translate3d(25px, 0px, 0px);
+        transform: translate3d(25px, 0px, 0px);
+    }
+    &.ng-enter.ng-enter-active {
+        opacity: 1;
+        -webkit-transform: translate3d(0px, 0px, 0px);
+        transform: translate3d(0px, 0px, 0px);
+    }
+    &.ng-leave {
+        opacity: 1;
+        -webkit-transform: translate3d(0px, 0px, 0px);
+        transform: translate3d(0px, 0px, 0px);
+    }
+    &.ng-leave.ng-leave-active {
+        opacity: 0;
+        -webkit-transform: translate3d(25px, 0px, 0px);
+        transform: translate3d(25px, 0px, 0px);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 4px;
+      right: 7px;
+    }
+}
+
+.alert-access-denied {
+    margin-top: 40px;
+}

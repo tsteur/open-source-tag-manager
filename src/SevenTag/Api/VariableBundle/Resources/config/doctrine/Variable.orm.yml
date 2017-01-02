@@ -1,0 +1,46 @@
+SevenTag\Api\VariableBundle\Entity\Variable:
+    type: entity
+    table: variable
+    repositoryClass: SevenTag\Api\VariableBundle\Entity\VariableRepository
+    indexes:
+      variableUpdatedAt:
+        columns: [updatedAt]
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        container:
+            targetEntity: SevenTag\Api\ContainerBundle\Entity\Container
+            inversedBy: variables
+            joinColumn:
+                name: container_id
+                referencedColumnName: id
+                onDelete: CASCADE
+    fields:
+        name:
+            type: string
+            length: 255
+        type:
+            type: string
+            length: 255
+        value:
+            type: string
+            length: 255
+            nullable: true
+        options:
+            type: array
+            nullable: true
+        createdAt:
+          type: datetime
+          gedmo:
+            timestampable:
+              on: create
+        updatedAt:
+          type: datetime
+          gedmo:
+            timestampable:
+              on: update
+    lifecycleCallbacks: {  }

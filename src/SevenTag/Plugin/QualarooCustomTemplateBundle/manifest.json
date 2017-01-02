@@ -1,0 +1,8 @@
+{
+  "name": "seventag_plugin_qualaroo_custom_template",
+  "version": "1.0.0",
+  "assets-js": [
+    {"path": "js/stgQualaroo.js", "target": "bottom", "externalPath": false}
+  ],
+  "containerjs-configs": []
+}

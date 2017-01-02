@@ -1,0 +1,31 @@
+SevenTag\Api\SecurityBundle\Entity\Client:
+    type: entity
+    table: oauth2_client
+    repositoryClass: SevenTag\Api\SecurityBundle\Entity\ClientRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: type
+        type: string
+    discriminatorMap:
+        client: SevenTag\Api\SecurityBundle\Entity\Client
+        integration: SevenTag\Api\SecurityBundle\Entity\Integration
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        createdAt:
+            type: datetime
+            column: created_at
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            column: updated_at
+            gedmo:
+                timestampable:
+                    on: update
+    lifecycleCallbacks: {  }

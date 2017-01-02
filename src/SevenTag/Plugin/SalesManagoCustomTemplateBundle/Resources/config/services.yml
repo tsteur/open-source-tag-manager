@@ -1,0 +1,10 @@
+imports:
+    - { resource: 'forms.yml' }
+
+services:
+    seven_tag_plugin_sales_manago_provider_custom_template.template_provider.sales_manago:
+        class: SevenTag\Plugin\SalesManagoCustomTemplateBundle\Template\SalesManagoProvider
+        parent: seven_tag_tag.templating_provider
+        public: false
+        tags:
+            - { name: seven_tag_tag_template_provider }

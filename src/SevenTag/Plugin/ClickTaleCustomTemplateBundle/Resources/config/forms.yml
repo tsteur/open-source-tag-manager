@@ -1,0 +1,5 @@
+services:
+    seven_tag_plugin_click_tale_custom_template.form_type.click_tale:
+        class: SevenTag\Plugin\ClickTaleCustomTemplateBundle\Form\ClickTaleTemplateFormType
+        tags:
+            - { name: form.type, alias: click_tale_template_form_type }

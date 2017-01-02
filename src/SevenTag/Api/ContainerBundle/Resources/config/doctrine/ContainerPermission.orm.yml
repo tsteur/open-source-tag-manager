@@ -1,0 +1,30 @@
+SevenTag\Api\ContainerBundle\Entity\ContainerPermission:
+    type: entity
+    table: container_permission
+    repositoryClass: SevenTag\Api\ContainerBundle\Entity\ContainerPermissionRepository
+    uniqueConstraints:
+      event_user:
+        columns:
+          - container_access_id
+          - user_id
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        user:
+            targetEntity: SevenTag\Api\UserBundle\Entity\User
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: CASCADE
+                onUpdate: CASCADE
+    fields:
+        containerAccessId:
+            type: integer
+            column: container_access_id
+        permissions:
+            type: integer
+    lifecycleCallbacks: {  }

@@ -1,0 +1,43 @@
+include ../../../views/_mixins
+
+- var FORM_NAME = 'loginForm'
+
+.login-block.center-block
+    h2(translate='Sign in').page-header.text-center
+    cc-notification-form(ng-hide="view.loading")
+    .text-center(ng-show="view.loading")
+        img(src="app/images/loader.svg", class="loader-spinner")
+    +form(FORM_NAME)(ng-hide="view.loading", stg-form, form-resource="view.loginPromise")
+        .form-group(
+            ng-class="{'has-error': (#{FORM_NAME}.$submitted && #{FORM_NAME}.login.$invalid), 'has-feedback': (#{FORM_NAME}.$submitted && #{FORM_NAME}.login.$invalid)}"
+        )
+            label(translate='Email')
+            input#signin-form-login.form-control(
+                type="text",
+                name="login",
+                ng-model="view.auth.identity",
+                ng-required="true",
+                ng-keypress="#{FORM_NAME}.login.$error.login !== undefined ? #{FORM_NAME}.login.$error = {} : ''"
+            )
+            span.form-control-feedback.icon-close(
+                ng-if="(#{FORM_NAME}.$submitted && #{FORM_NAME}.login.$invalid)"
+            )
+            div(id="login-validation-message" ng-show="#{FORM_NAME}.login.$error.login")
+                p.error(ng-repeat="error in #{FORM_NAME}.login.$error.login") {{ error }}
+        .form-group(ng-class="{'has-error': (#{FORM_NAME}.$submitted && #{FORM_NAME}.password.$invalid), 'has-feedback': (#{FORM_NAME}.$submitted && #{FORM_NAME}.password.$invalid)}")
+            label(translate='Password')
+            input#signin-form-password.form-control(
+                type="password",
+                name="password",
+                ng-model="view.auth.password",
+                ng-required="true",
+                ng-keypress="#{FORM_NAME}.password.$error.password !== undefined ? #{FORM_NAME}.password.$error = {} : ''"
+            )
+            span.form-control-feedback.icon-close(ng-if="(#{FORM_NAME}.$submitted && #{FORM_NAME}.password.$invalid)")
+            div(id="password-validation-message" ng-show="#{FORM_NAME}.password.$error.password")
+                p.error(ng-repeat="error in #{FORM_NAME}.password.$error.password") {{ error }}
+        .form-group
+            p.text-center
+                +button('primary')#signin-form-submit(type="submit", ng-click="#{FORM_NAME}.$valid ? view.submitForm(view.auth) : view.displayInvalidLoginMessage()", translate="Sign in")
+    p.text-center(ng-hide="view.loading")
+        a.reset(ui-sref="resetPassword", translate='Forgot your password?')

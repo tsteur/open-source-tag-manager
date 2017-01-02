@@ -1,0 +1,76 @@
+SevenTag\Api\TagBundle\Entity\Tag:
+    type: entity
+    table: tag
+    repositoryClass: SevenTag\Api\TagBundle\Entity\TagRepository
+    indexes:
+      tagUpdatedAt:
+        columns: [updatedAt]
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        container:
+            targetEntity: SevenTag\Api\ContainerBundle\Entity\Container
+            inversedBy: tags
+            joinColumn:
+                name: container_id
+                referencedColumnName: id
+                onDelete: CASCADE
+    manyToMany:
+        triggers:
+            targetEntity: SevenTag\Api\TriggerBundle\Entity\Trigger
+            inversedBy: tags
+            joinTable:
+                name: tag_trigger
+                joinColumns:
+                    tag_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    trigger_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    fields:
+        name:
+            type: string
+            length: 255
+        code:
+            type: text
+        priority:
+            type: integer
+        createdAt:
+          type: datetime
+          gedmo:
+            timestampable:
+              on: create
+        updatedAt:
+          type: datetime
+          gedmo:
+            timestampable:
+              on: update
+        documentWrite:
+            type: boolean
+            default: false
+        disableInDebugMode:
+            type: boolean
+            default: false
+        respectVisitorsPrivacy:
+            type: boolean
+            default: false
+        template:
+            type: string
+            length: 255
+            nullable: true
+        templateOptions:
+            type: array
+            nullable: true
+        isActive:
+            type: boolean
+            default: true
+        isSynchronous:
+            type: boolean
+            default: true
+    lifecycleCallbacks: {  }

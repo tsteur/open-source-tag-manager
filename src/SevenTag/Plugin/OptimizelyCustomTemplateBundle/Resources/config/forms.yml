@@ -1,0 +1,5 @@
+services:
+    seven_tag_plugin_optimizely_custom_template.form_type.optimizely:
+        class: SevenTag\Plugin\OptimizelyCustomTemplateBundle\Form\OptimizelyTemplateFormType
+        tags:
+            - { name: form.type, alias: optimizely_template_form_type }

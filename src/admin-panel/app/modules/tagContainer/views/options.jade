@@ -1,0 +1,124 @@
+include ../../../views/_mixins.jade
+
+- var LOADING_PROMISE = 'view.containerPromise';
+- var FORM_TITLE = 'Edit options';
+- var GENERAL_FORM_NAME = 'editContainerForm';
+- var PERMISSIONS_FORM_NAME = 'editContainerPermissionsForm';
+- var FORM_NAME = 'editContainerForm';
+
+.row
+    cc-breadcrumb(ng-hide="view.success")
+.row(ng-if="currentContainer.$container.hasPermission('operator')")
+    ul.nav.nav-tabs(ng-init="view.activeTab = 'general'")
+        li(id="container-options-general", ng-class="{active: view.activeTab === 'general'}")
+            a(translate="General", ng-click="view.activeTab = 'general'")
+        li(id="container-options-permissions", ng-class="{active: view.activeTab === 'permissions'}")
+            a(translate="Permissions", ng-click="view.activeTab = 'permissions'")
+
+    .tab-content
+        div(ng-switch='view.activeTab')
+            .tab-pane.panel.panel-default(cg-busy="{promise: #{LOADING_PROMISE}, templateUrl: \"app/views/loader.html\"}" ng-switch-when='general')
+                .panel-body
+                    cc-notification-form(ng-if="$state.includes('editProfile')" ng-show="!view.loading")
+                    +form(
+                        GENERAL_FORM_NAME
+                    )(stg-form, form-resource="#{FORM_RESOURCE}")
+                        .row(ng-init="view.validateContainer = false")
+                            .col-lg-8.col-md-12.col-sm-12
+                                +field_text(
+                                    FORM_NAME,
+                                    "view.container.name",
+                                    "name",
+                                    "{{'Container name'|translate}}" + " <span class=\"important\">*</span>",
+                                    "view.validateContainer"
+                                )#container-form-name(
+                                    ng-required="true",
+                                    placeholder= "{{'Place your container\\'s name'|translate}}"
+                                )
+                            .col-lg-4
+                                // Place for help
+
+                        .row
+                            .col-lg-8.col-md-12.col-sm-12
+                                +field_textarea(
+                                    FORM_NAME,
+                                    "view.container.code",
+                                    "code",
+                                    "{{'Container code for asynchronous tags'|translate}}",
+                                    "view.validateContainer",
+                                    '{{"Container code is a snippet which helps you to fire all your tags on your website. Paste the Container code into your website’s code (in between the &lt;body&gt; &lt;&#47;body&gt; element of all your pages). We recommend you embed the code right under the <body> element."|translate}}'
+                                )(
+                                    rows="12",
+                                    readonly,
+                                    cc-clipboard
+                                )
+                            .col-lg-4
+                                // Place for help
+                      .row
+                          .col-lg-8.col-md-12.col-sm-12
+                              +field_textarea(
+                                  FORM_NAME,
+                                  "view.container.codeSynchronous",
+                                  "viewContainerCode",
+                                  "{{'Container code for synchronous tags'|translate}}",
+                                  "view.validateContainer",
+                                  "{{'Container code is a snippet which helps you to fire all your tags on your website. Paste the Container code into your website’s code (in between the &lt;head&gt; &lt;&#47;head&gt; element of all your pages). Please notice embed the code under the <body> element may causes performance problems.'|translate}}"
+                              )(
+                                  rows="3",
+                                  readonly,
+                                  cc-clipboard
+                              )
+                          .col-lg-4
+                              // Place for help
+                        .row
+                            .col-lg-8.col-md-12.col-sm-12
+                                +field_number_unit(
+                                    FORM_NAME,
+                                    "view.container.delay",
+                                    "delay",
+                                    '{{"Delay"|translate}}',
+                                    "view.validateContainer",
+                                    '{{"Property is used to slow down actions (e.g. redirect) when waiting for tags to be resolved."|translate}}',
+                                    'ms'
+                                )#container-form-delay(
+                                    aria-describedby="delay-unit"
+                                    ng-required="true",
+                                    min=0,
+                                    max=10000,
+                                    placeholder= "{{'Set delay'|translate}}",
+                                    ng-disabled="!currentContainer.$container.hasPermission('edit')"
+                                )
+                            .col-lg-4
+
+                        .form-inline
+                            .form-group
+                                +field_submit(
+                                    FORM_NAME,
+                                    '{{"Save"|translate}}'
+                                )#container-form-submit-button(
+                                    ng-click="#{FORM_NAME}.$valid ? view.submitForm(view.container) : view.displayInvalidFormMessage()"
+                                )
+                            .form-group
+                                +button('link').confirm-standalone(
+                                    cc-confirm="view.removeContainer()"
+                                )#container-form-delete-button
+                                    i.icon-delete
+                                    span(translate='Delete')
+
+            .panel.panel-default.tab-pane(cg-busy="{promise: #{LOADING_PROMISE}, templateUrl: \"app/views/loader.html\"}" ng-switch-when='permissions')
+                .panel-body
+                    cc-notification-form(ng-if="$state.includes('editProfile')" ng-show="!view.loading")
+
+                    include permissions.jade
+
+.row(ng-if="!currentContainer.$container.hasPermission('operator')")
+    .panel.panel-default(cg-busy="{promise: #{LOADING_PROMISE}, templateUrl: \"app/views/loader.html\"}")
+        .panel-body
+            cc-notification-form(ng-if="$state.includes('editProfile')" ng-show="!view.loading")
+            h4.form-heading(ng-hide="view.success")
+                | !{FORM_TITLE}
+            block statements
+            +form(
+                FORM_NAME
+            )(stg-form, form-resource="#{FORM_RESOURCE}")
+                include edit.jade

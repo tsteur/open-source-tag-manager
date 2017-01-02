@@ -1,0 +1,16 @@
+block vars
+    
+.row
+    cc-breadcrumb(ng-hide="view.success || $state.includes('containerExplanation')")
+.row
+    .panel.panel-default(cg-busy="{promise: #{LOADING_PROMISE}, templateUrl: \"app/views/loader.html\"}")
+        .panel-body
+            cc-notification-form(ng-if="$state.includes('editProfile')" ng-show="!view.loading")
+            h4.form-heading(ng-hide="view.success")
+                | !{FORM_TITLE}
+            block statements
+            +form(
+                FORM_NAME
+            )(stg-form, form-resource="#{FORM_RESOURCE}")
+                block fields
+                block actions

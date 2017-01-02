@@ -1,0 +1,37 @@
+#event-log-breadcrumb {
+    & > ul {
+        @extend .breadcrumb;
+        background-color: transparent;
+        padding: 16px 28px;
+
+        & > li {
+            font-size: 17px;
+            padding-left: 10px;
+
+            & > a {
+
+                text-decoration: none;
+
+                &:link, &:visited, &:hover, &:active {
+
+                    color: inherit;
+
+                }
+
+                & > i {
+                    float: left;
+                    position: relative;
+                    top: 3px;
+                    left: -10px;
+                }
+
+                & > .event-log-breadcrumb-label {
+                    line-height: 0;
+                }
+
+            }
+
+
+        }
+    }
+}

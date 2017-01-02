@@ -1,0 +1,11 @@
+{
+  "name": "custom_plugin_for_seven_tag",
+  "version": "1.0.0",
+  "assets-js": [
+    {"path": "js/asset1.js", "target": "bottom", "externalPath": false},
+    {"path": "js/asset2.js", "target": "top", "externalPath": true}
+  ],
+  "containerjs-configs": [
+    {"path": "js/test.js"}
+  ]
+}

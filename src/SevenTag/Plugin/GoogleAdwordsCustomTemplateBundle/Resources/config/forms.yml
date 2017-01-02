@@ -1,0 +1,5 @@
+services:
+    seven_tag_plugin_google_adwords_custom_template.form_type.google_adwords:
+        class: SevenTag\Plugin\GoogleAdwordsCustomTemplateBundle\Form\GoogleAdwordsTemplateFormType
+        tags:
+            - { name: form.type, alias: google_adwords_template_form_type }

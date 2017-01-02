@@ -1,0 +1,60 @@
+include ../../../views/_mixins.jade
+
+extends ../../../views/_view-forms.jade
+
+block vars
+    - var LOADING_PROMISE = 'view.containerPromise';
+    - var FORM_TITLE = '{{ "Your container has been created" | translate }}';
+    - var FORM_NAME = 'editContainerForm';
+
+block statements
+    p(translate='What to do next:').stg-standalone-subheader
+    p.stg-standalone-text= "1. " + "{{'Copy the code and paste it into your website\\'s code. You can also do it later.'|translate}}"
+    p.stg-standalone-text= "2. "
+        a(ui-sref="tagCreate({containerId: view.container.id})")= "{{'Create a first tag'|translate}}"
+        cc-help(
+            placement="right"
+            content="{{'A tag is a snippet of JavaScript that sends information to a third party. You don\\'t need to add your tags directly to your website, just specify how and when the tags should fire.'|translate}}",
+        )
+    p.stg-standalone-text= "3. "
+        a(ui-sref="triggerCreate({containerId: view.container.id})")= '{{"Create a trigger"|translate}}'
+        | &nbsp;
+        span(translate='and link it with the tag to fire it on your website.')
+        cc-help(
+            placement="right"
+            content="{{'A Trigger specifies how and when the tag should fire.'|translate}}",
+        )
+
+block fields
+    .row
+        .col-lg-8.col-md-12.col-sm-12
+            +field_textarea(
+                FORM_NAME,
+                "view.container.code",
+                "viewContainerCode",
+                "{{'Container code for asynchronous tags'|translate}}",
+                null,
+                '{{"Container code is a snippet which helps you to fire all your tags on your website. Paste the Container code into your website’s code (in between the &lt;body&gt; &lt;&#47;body&gt; element of all your pages). We recommend you embed the code right under the <body> element."|translate}}'
+            )(
+                rows="10",
+                readonly,
+                cc-clipboard
+            )
+        .col-lg-4
+            // Place for help
+    .row
+        .col-lg-8.col-md-12.col-sm-12
+            +field_textarea(
+                FORM_NAME,
+                "view.container.codeSynchronous",
+                "viewContainerCode",
+                "{{'Container code for synchronous tags'|translate}}",
+                "view.validateContainer",
+                "{{'Container code is a snippet which helps you to fire all your tags on your website. Paste the Container code into your website’s code (in between the &lt;head&gt; &lt;&#47;head&gt; element of all your pages). Please notice embed the code under the <body> element may causes performance problems.'|translate}}"
+            )(
+                rows="3",
+                readonly,
+                cc-clipboard
+            )
+        .col-lg-4
+            // Place for help

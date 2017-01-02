@@ -1,0 +1,28 @@
+include ../../../views/_mixins.jade
+
+- var LOADING_PROMISE = 'view.integrationPromise';
+- var FORM_TITLE = '{{"Edit integration"|translate}}';
+- var FORM_NAME = 'editIntegrationForm';
+- var FORM_RESOURCE = 'view.integrationPromise';
+
+.row
+    stg-debug-panel
+.row
+    cc-breadcrumb
+.row
+    .panel.panel-default(cg-busy="{promise: #{LOADING_PROMISE}, templateUrl: \"app/views/loader.html\"}")
+        .panel-body
+            h4.form-heading(ng-hide="view.success")
+                | !{FORM_TITLE}
+
+            include _form.jade
+
+            hr.divider
+            .form-group
+                +field_submit(
+                    FORM_NAME,
+                    "{{'Save'|translate}}"
+                )(
+                    ng-click="#{FORM_NAME}.$valid ? view.submitForm(view.integration) : view.validateIntegration = true",
+                    ng-disabled="view.showListIntegrationsForm === true"
+                )#user-form-submit-button

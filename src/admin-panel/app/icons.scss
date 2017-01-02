@@ -1,0 +1,55 @@
+/**
+ * Copyright (C) 2015 Digimedia Sp. z.o.o. d/b/a Clearcode
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+@font-face {
+    font-family: "<%= fontName %>";
+    src: url('<%= fontPath %><%= fontName %>.eot');
+    src: url('<%= fontPath %><%= fontName %>.eot?#iefix') format('eot'),
+    url('<%= fontPath %><%= fontName %>.woff') format('woff'),
+    url('<%= fontPath %><%= fontName %>.ttf') format('truetype'),
+    url('<%= fontPath %><%= fontName %>.svg#<%= fontName %>') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+%icon-base-styles {
+    display: inline-block;
+    font-family: "<%= fontName %>";
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    text-decoration: inherit;
+    -webkit-font-smoothing: antialiased;
+}
+
+$icons: (
+<%= glyphs.map(function(glyph){ return glyph.name + ': "' + '\\' + glyph.unicode[0].charCodeAt(0).toString(16).toUpperCase() + '"' }).join(',\n  ') %>
+);
+
+@each $name, $icon in $icons {
+    .<%= className %>-#{$name}:before {
+    @extend %icon-base-styles;
+    content: $icon;
+}
+}
+
+.breadcumb > li+li:before {
+    @extend %icon-base-styles;
+    content: map-get($icons, next) !important;
+}

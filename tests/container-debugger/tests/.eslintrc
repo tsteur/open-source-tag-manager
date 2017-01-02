@@ -1,0 +1,12 @@
+{
+  "env": {
+    "browser": true,
+    "jasmine": true
+  },
+  "globals": {
+    "inject": true,
+    "browser": true,
+    "by": true,
+    "element": true
+  }
+}

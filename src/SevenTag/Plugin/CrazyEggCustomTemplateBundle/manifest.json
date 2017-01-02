@@ -1,0 +1,8 @@
+{
+  "name": "seventag_plugin_crazy_egg_custom_template",
+  "version": "1.0.0",
+  "assets-js": [
+    {"path": "js/stgCrazyEgg.js", "target": "bottom", "externalPath": false}
+  ],
+  "containerjs-configs": []
+}

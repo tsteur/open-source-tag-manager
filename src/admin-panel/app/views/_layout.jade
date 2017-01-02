@@ -1,0 +1,233 @@
+doctype html
+html(lang=getLocale())
+    head
+        meta(charset="utf-8")
+        title(cc-Title, ng-bind-template="{{ !$state.includes('container') && !$state.includes('editProfile') ? titleCtrl.title : titleCtrl.default }}")
+        meta(name="description", content="")
+        meta(name="viewport", content="width=device-width")
+        <!--[if IE]>
+        link(rel="shortcut icon", href="/favicon.ico")
+        <![endif]-->
+        link(rel="icon", href="/favicon.ico")
+
+        // build:css styles.css
+        <!-- inject:css -->
+        <!-- endinject -->
+        // endbuild
+    body
+        block body
+
+        // build:js vendor.js
+        <!-- vendors:js -->
+        <!-- endinject -->
+        // endbuild
+
+        <!-- build:oauthsettings -->
+        <!-- endbuild -->
+
+        // build:js scripts.js
+        <!-- inject:js -->
+        <!-- endinject -->
+        // endbuild
+
+        <!-- build:pluginsjsbottom -->
+        <!-- endbuild -->
+
+    script(type="text/ng-template" id="st-pagination.html")
+        .text-center
+            div(ng-show="params.settings().$loading").text-center
+                img(src="app/images/loader.svg" class="loader-spinner")
+        .text-center(ng-show="!params.settings().$loading && params.total() > 0")
+            ul.pagination(ng-hide="params.count() >= params.data.length && (params.total()/params.count()) <= 1")
+                li(ng-class="{disabled: params.page() === 1}")
+                    a#pagination-first-button(
+                        href,
+                        aria-label="First",
+                        ng-click="params.page() === 1 ? '' : params.page(1)"
+                    ) <<
+                li(ng-class="{disabled: params.page() === 1}")
+                    a#pagination-prev-button(
+                        href,
+                        aria-label="Previous",
+                        ng-click="params.page() === 1 ? '' : params.page(params.page() - 1)"
+                    ) < {{'Prev'|translate}}
+                li(class="disabled")
+                    a#pagination-total-counter(href)
+                        | {{params.total() ? (params.page() - 1) * params.count() + 1 : '0'}}-{{ params.page() * params.count() >= params.total() ? params.total() : params.page() * params.count() }} {{'of'|translate}} {{ params.total() }}
+                li(ng-class="{disabled: params.count() > params.data.length ? true : (params.total()/params.count() | tmCeil) === params.page()}")
+                    a#pagination-next-button(
+                        href,
+                        ng-click="params.count() > params.data.length || (params.total()/params.count() | tmCeil) === params.page() ? '' : params.page(params.page() + 1)"
+                    ) {{'Next'|translate}} >
+                li(ng-class="{disabled: params.count() > params.data.length ? true : (params.total()/params.count() | tmCeil) === params.page()}")
+                    a#pagination-last-button(
+                        href,
+                        ng-click="params.count() > params.data.length ? '' : params.page((params.total()/params.count() | tmCeil))"
+                    ) >>
+
+    script(type="text/ng-template", id="st-header.html")
+        tr(ng-if="$data.length > 0")
+            th(
+                ng-repeat="column in $columns",
+                ng-if="column.title() !== 'actions'"
+                ng-class="{'sort-asc': tableParams.isSortBy(column.field, 'asc'), 'sort-desc': tableParams.isSortBy(column.field, 'desc')}",
+                ng-click="tableParams.sorting(column.field, tableParams.isSortBy(column.field, 'asc') ? 'desc' : 'asc')"
+            ).sortable
+                | {{ column.title()|translate }}
+
+    script(type="text/ng-template", id="container-list-st-header.html ")
+        tr(ng-if="$data.length > 0")
+            th.sortable
+                span(translate="Name")
+            th.sortable
+                span(translate="Permissions")
+            th.sortable
+                span(translate="Container ID")
+                cc-help(
+                    placement="top"
+                    content="{{'Every container has a unique ID which is inserted into the snippet code.'|translate}}",
+                )
+            th.sortable
+                span(translate="Published")
+
+    script(type="text/ng-template", id="trigger-list-st-header.html ")
+        tr(ng-if="$data.length > 0")
+            th.sortable
+                span(translate="Name")
+            th.sortable
+                span(translate="Type")
+                cc-help(
+                    placement="right"
+                    content="" +
+                        "{{'A Trigger specifies how and when the tag should fire.'|translate}}" + ' ' +
+                        "{{'E.g. “Page view” should fire when a page loads according to the set conditions'|translate}}"
+                )
+            th.sortable
+                span(translate="Tags")
+                cc-help(
+                    placement="right"
+                    content="{{'The number of tags where the trigger is being used.'|translate}}"
+                )
+            th.sortable
+                span(translate="Last edit")
+
+    script(type="text/ng-template", id="user-list-st-header.html ")
+        tr(ng-if="$data.length > 0")
+            th.sortable
+                span(translate="User")
+            th.sortable
+                span(translate="Email")
+            th.sortable
+                span(translate="Role")
+            th.sortable
+                span(translate="Status")
+            th.sortable
+                span(translate="Create date")
+
+    script(type="text/ng-template", id="variable-list-st-header.html")
+        tr(ng-if="$data.length > 0")
+            th.sortable
+                span(translate="Name")
+            th.sortable
+                span(translate="Type")
+            th.sortable
+                span(translate="Last edit")
+
+    script(type="text/ng-template", id="integration-list-st-header.html")
+        tr(ng-if="$data.length > 0")
+            th.sortable
+                span(translate="Name")
+            th.sortable
+                span(translate="Created at")
+
+    script(type="text/ng-template", id="permission-list-st-header.html ")
+        tr(ng-if="$data.length > 0")
+            th.sortable
+                span(translate="User")
+            th.sortable
+                span(translate="No access")
+                cc-help(
+                    placement="top"
+                    content="{{'A user has no access to this container.'|translate}}" + '<br />'
+                )
+            th.sortable
+                span(translate="View")
+                cc-help(
+                    placement="top"
+                    content="{{'A user has an access to'|translate}}" + ':<br />' + "{{'- view tags'|translate}}" + '<br />' + "{{'- view triggers'|translate}}" + '<br />' + "{{'- view container options'|translate}}" + '<br />' + "{{'- open debug mode.'|translate}}"
+                )
+            th.sortable
+                span(translate="Edit")
+                cc-help(
+                    placement="top"
+                    content="{{'User can'|translate}}" + ':<br />' + "{{'- edit tags'|translate}}" + '<br />' + "{{'- edit triggers'|translate}}" + '<br />' + "{{'- discard changes'|translate}}" + '<br />' + "{{'- change container options (not users permissions)'|translate}}" + '<br />' + "{{'- open debug mode.'|translate}}"
+                )
+            th.sortable
+                span(translate="Publish")
+                cc-help(
+                    placement="top"
+                    content="{{'User can'|translate}}" + ':<br />' + "{{'- edit tags'|translate}}" + '<br />' + "{{'- edit triggers'|translate}}" + '<br />' + "{{'- discard changes'|translate}}" + '<br />' + "{{'- change container options (with no setting permissions)'|translate}}" + '<br />' + "{{'- open debug mode'|translate}}" + '<br />' + "{{'- publish container'|translate}}"
+                )
+            th.sortable
+                span(translate="Owner")
+                cc-help(
+                    placement="right"
+                    content="{{'User can'|translate}}" + ':<br />' + "{{'- edit tags'|translate}}" + '<br />' + "{{'- edit triggers'|translate}}" + '<br />' + "{{'- discard changes'|translate}}" + '<br />' + "{{'- change container options'|translate}}" + '<br />' + "{{'- set permissions'|translate}}" + '<br />' + "{{'- open debug mode'|translate}}" + '<br />' + "{{'- publish container.'|translate}}" + '<br /><br />' + "{{'Note that all application administrators has an owner role in all containers.'|translate}}"
+                )
+
+    script(type="text/ng-template", id="select-template.html")
+        .dropdown(dropdown, on-toggle="toggled(open)", id="{{ id }}-dropdown")
+            button.btn.btn-select.dropdown-toggle(dropdown-toggle aria-expanded="true") {{ getActiveOptionLabel() }}
+                strong.pull-right
+                    i.icon-arrow-down
+            ul.dropdown-menu(role="menu")
+                li(ng-repeat="element in ccSelectOptions", id="{{ id }}-{{ $index }}-options", ng-click="changeSelection(element)")
+                    | {{ element[ccSelectLabel] }}
+    
+    script(type="text/ng-template", id="variables-list.html")
+        .dropdown.insert-variables(dropdown)
+            ul.dropdown-menu(role="menu")
+                li(ng-repeat="variable in selectorCtrl.variables", id="{{ $index }}-options", ng-click="selectorCtrl.addVariable(variable)")
+                    | {{ variable.name }}
+    
+    script(type="text/ng-template", id="clipboard.html")
+        button(class="btn btn-copyToClipboard" clip-copy="copyToClipboard()")
+            i.icon-copy
+            span(translate="Copy code")
+
+    script
+        |   // Include the UserVoice JavaScript SDK (only needed once on a page)
+        |   UserVoice=window.UserVoice || [];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/HxQ9Wunt93Wg71K1vA.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+        |   //
+        |   // UserVoice Javascript SDK developer documentation:
+        |   // https://www.uservoice.com/o/javascript-sdk
+        |   //
+        |    // Set colors
+        |   UserVoice.push(['set', {
+        |       accent_color: '#2e9354',
+        |       trigger_color: 'white',
+        |       trigger_background_color: '#2e9354'
+        |   }]);
+        |    // Identify the user and pass traits
+        |   // To enable, replace sample data with actual user traits and uncomment the line
+        |   UserVoice.push(['identify', {
+        |   //email:      'john.doe@example.com', // User’s email address
+        |   //name:       'John Doe', // User’s real name
+        |   //created_at: 1364406966, // Unix timestamp for the date the user signed up
+        |   //id:         123, // Optional: Unique id of the user (if set, this should not change)
+        |   //type:       'Owner', // Optional: segment your users by type
+        |   //account: {
+        |   //  id:           123, // Optional: associate multiple users with a single account
+        |   //  name:         'Acme, Co.', // Account name
+        |   //  created_at:   1364406966, // Unix timestamp for the date the account was created
+        |   //  monthly_rate: 9.99, // Decimal; monthly rate of the account
+        |   //  ltv:          1495.00, // Decimal; lifetime value of the account
+        |   //  plan:         'Enhanced' // Plan name for the account
+        |   //}
+        |   }]);
+        |    // Add default trigger to the bottom-right corner of the window:
+        |   UserVoice.push(['addTrigger', {trigger_position: 'bottom-right' }]);
+        |   // Or, use your own custom trigger:
+        |   //UserVoice.push(['addTrigger', '#id']);
+        |    // Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
+        |   UserVoice.push(['autoprompt', {}]);

@@ -1,0 +1,128 @@
+default:
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                path: "app/BehatKernel.php"
+                class: BehatKernel
+
+    formatters:
+        junit:
+            output_path: build/tests-reports/behat
+        pretty:
+            verbose:  false
+            paths:    false
+            snippets: false
+
+    suites:
+        acl:
+            contexts:
+                - Features\Context\BoostrapContext
+                - Features\Context\ContainersFixturesContext
+                - Features\Context\RestContext
+                - Features\Context\ContainersContext
+                - Features\Context\TagsContext
+                - Features\Context\TriggersContext
+                - Features\Context\UsersContext
+                - Features\Context\VersioningContext
+            filters:
+                tags: "@acl"
+        containers:
+            contexts:
+                - Features\Context\BoostrapContext
+                - Features\Context\ContainersFixturesContext
+                - Features\Context\RestContext
+                - Features\Context\ContainersContext
+                - Features\Context\TagsContext
+                - Features\Context\TriggersContext
+            filters:
+                tags: "@containers"
+
+        tags:
+            contexts:
+                - Features\Context\BoostrapContext
+                - Features\Context\ContainersFixturesContext
+                - Features\Context\RestContext
+                - Features\Context\ContainersContext
+                - Features\Context\TagsContext
+            filters:
+                tags: "@tags"
+
+        users:
+            contexts:
+                - Features\Context\BoostrapContext
+                - Features\Context\UsersFixturesContext
+                - Features\Context\RestContext
+                - Features\Context\UsersContext
+            filters:
+                tags: "@users"
+        triggers:
+            contexts:
+                - Features\Context\BoostrapContext
+                - Features\Context\TriggersFixturesContext
+                - Features\Context\RestContext
+                - Features\Context\UsersContext
+                - Features\Context\TriggersContext
+            filters:
+                tags: "@triggers"
+        versioning:
+            contexts:
+                - Features\Context\BoostrapContext
+                - Features\Context\ContainersFixturesContext
+                - Features\Context\RestContext
+                - Features\Context\ContainersContext
+                - Features\Context\TagsContext
+                - Features\Context\VersioningContext
+            filters:
+                tags: "@versioning"
+        tag_custom_templates:
+            contexts:
+                - Features\Context\BoostrapContext
+                - Features\Context\ContainersFixturesContext
+                - Features\Context\RestContext
+                - Features\Context\ContainersContext
+                - Features\Context\TagsContext
+                - Features\Context\TagTemplatesContext
+            filters:
+                tags: "@tag_templates"
+        translations:
+            contexts:
+                - Features\Context\BoostrapContext
+                - Features\Context\RestContext
+                - Features\Context\TranslationsContext
+            filters:
+                tags: "@translations"
+
+        variables:
+            contexts:
+                - Features\Context\BoostrapContext
+                - Features\Context\ContainersFixturesContext
+                - Features\Context\RestContext
+                - Features\Context\ContainersContext
+                - Features\Context\VariablesContext
+            filters:
+                tags: "@variables"
+        integrations:
+            contexts:
+                - Features\Context\BoostrapContext
+                - Features\Context\IntegrationsFixturesContext
+                - Features\Context\RestContext
+                - Features\Context\ContainersContext
+                - Features\Context\IntegrationsContext
+            filters:
+                tags: "@integrations"
+
+chrome:
+    extensions:
+        Behat\MinkExtension:
+            base_url: 'http://7tag.dev'
+            #browser_name: phantomjs
+            browser_name: chrome
+            selenium2:
+                wd_host: http://localhost:5555/wd/hub
+
+    suites:
+        installer:
+            contexts:
+                - Features\Context\InstallerContext
+            filters:
+                tags: "@installer"

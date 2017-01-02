@@ -1,0 +1,30 @@
+extends ./index.test.layout
+
+block scripts
+    script
+        | window.stgEnv = 'dev';
+    script(src="stg.js")
+    script
+        | var stg = window.sevenTag,
+        |     debuggerHandler = window.sevenTag.debugger;
+        | stg.debugOptions = {enabled: true, containerName: 'e2e container'};
+        | debuggerHandler.enabled = true;
+        | debuggerHandler.start(stg.tagTree);
+        | debuggerHandler.debug();
+
+block content
+
+    a(id="referrer", href='##host##/index.test.html#/report/summary') a link
+    button(id="test-button", class="simple-btn", data-action="bea").
+        Be Awesome
+    if user
+        div.welcomebox
+            // Filtered inline output
+            p.
+                Welcome, #{user.name}
+    else
+        div.loginbox
+            form(name="login", id="test-form")
+                input(type="text", id="user-name-input", name="user")
+                input(type="password", id="user-pass-input", name="pass")
+                input(type="submit", id="submit-button", value="login")

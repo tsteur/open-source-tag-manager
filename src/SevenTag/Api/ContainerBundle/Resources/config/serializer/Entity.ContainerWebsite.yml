@@ -1,0 +1,16 @@
+SevenTag\Api\ContainerBundle\Entity\ContainerWebsite:
+  exclusion_policy: All
+  accessor_order: custom
+  custom_accessor_order: [id, url]
+  properties:
+    id:
+      expose: true
+      groups: [websites, container, containers]
+      serialized_name: id
+      type: integer
+    url:
+      expose: true
+      groups: [websites, container, containers]
+    parameterType:
+      expose: true
+      groups: [websites, container, containers]

@@ -1,0 +1,3 @@
+SevenTagInstallerBundle:
+    resource: "@SevenTagInstallerBundle/Resources/config/routing.yml"
+    prefix:   /

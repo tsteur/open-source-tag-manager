@@ -1,0 +1,19 @@
+index:
+    path:   /
+    defaults: { _controller: SevenTagInstallerBundle:Main:checkEnvironment }
+
+database:
+   path:   /configuration/database
+   defaults: { _controller: SevenTagInstallerBundle:Configuration:database }
+
+configuration:
+   path:   /configuration/show
+   defaults: { _controller: SevenTagInstallerBundle:Configuration:show }
+
+admin:
+   path:   /admin/create
+   defaults: { _controller: SevenTagInstallerBundle:User:createAdmin }
+
+start:
+   path:   /finish
+   defaults: { _controller: SevenTagInstallerBundle:Main:finish }

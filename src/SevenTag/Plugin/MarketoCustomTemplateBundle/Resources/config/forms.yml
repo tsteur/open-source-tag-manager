@@ -1,0 +1,5 @@
+services:
+    seven_tag_plugin_marketo_custom_template.form_type.marketo:
+        class: SevenTag\Plugin\MarketoCustomTemplateBundle\Form\MarketoFormType
+        tags:
+            - { name: form.type, alias: marketo_form_type }

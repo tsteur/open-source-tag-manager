@@ -1,0 +1,5 @@
+services:
+    seven_tag_plugin_crazy_egg_custom_template.form_type.crazy_egg:
+        class: SevenTag\Plugin\CrazyEggCustomTemplateBundle\Form\CrazyEggTemplateFormType
+        tags:
+            - { name: form.type, alias: crazy_egg_template_form_type }

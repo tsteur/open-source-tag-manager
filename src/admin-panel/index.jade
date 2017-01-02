@@ -1,0 +1,55 @@
+include app/views/mixins/_bootstrap
+
+extends ./app/views/_layout.jade
+
+block body
+    <!-- build:pluginsjstop -->
+    <!-- endbuild -->
+    section#wrapper.wrapper(ng-init="animateSidebarReady = false")
+        include ./app/views/_navbar.jade
+        <!--[if lt IE 10]>
+        p.browserhappy
+            | {{ 'You are using <strong>outdated</strong> browser.' | translate }}
+            | {{ 'Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience' | translate }}
+        <![endif]-->
+        aside#wrapper-sidebar.sidebar.animated.ng-hide(ng-show="animateSidebarReady", ng-class="{slideInLeft: isContainerView(), slideOutLeft: !isContainerView()}", ng-cloak)
+            ul.sidebar-nav(role="navigation", ng-style="{ 'padding-top' : (isContainerView() && currentContainer && currentContainer.isDirty() ? 140 : 85) + 'px' }")
+                li(ng-class="{'active': $state.includes('tags') || $state.includes('tagCreate') || $state.includes('tagEdit')}")
+                    a#sidebar-nav-links-tags(
+                        ui-sref="tags({containerId: activeContainerId})"
+                    )
+                        i.icon-tag
+                        span(translate="Tags")
+                li(ng-class="{'active': $state.includes('triggers') || $state.includes('triggerCreate') || $state.includes('triggerEdit')}")
+                    a#sidebar-nav-links-triggers(
+                        ui-sref="triggers({containerId: activeContainerId})"
+                    )
+                        i.icon-trigger
+                        span(translate="Triggers")
+                li(ng-class="{'active': $state.includes('variables') || $state.includes('variableCreate') || $state.includes('variableEdit')}")
+                    a#sidebar-nav-links-variables(
+                        ui-sref="variables({containerId: activeContainerId})"
+                    )
+                        i.icon-variable
+                        span(translate="Variables")
+                li(ng-class="{'active': $state.includes('debug')}")
+                    a#sidebar-nav-links-debug(
+                        ui-sref="debug({containerId: activeContainerId})"
+                    )
+                        i.icon-debug
+                        span(translate="Debug")
+                li(ng-class="{'active': $state.includes('containerEdit')}")
+                    a#sidebar-nav-links-options(
+                        ui-sref="containerEdit({containerId: activeContainerId})"
+                    )
+                        i.icon-options
+                        span(translate="Options")
+
+        article#wrapper-page.content(ng-class="{'content-with-sidebar': isContainerView()}")
+            cc-notification
+            div(class="container{{ isContainerView() ? '-fluid' : ''}}")
+                .loader.text-center(ng-if="!security.isChecked()")
+                    img(src="app/images/loader.svg" class="loader-spinner")
+                .page-content(ng-show="security.isChecked()", class="col-lg-12{{ isContainerView() ? ' page-content-limited' : ''}}")
+                    div(ui-view)
+    include ./app/views/_footer

@@ -1,0 +1,3 @@
+tags:
+    resource: "@SevenTagTagBundle/Controller/TagsRestController.php"
+    type:     rest

@@ -1,0 +1,84 @@
+{
+  "name": "seventag",
+  "version": "1.0.0",
+  "license": "AGPLv3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.3.18",
+    "angular-animate": "~1.3.*",
+    "angular-bootstrap": "~0.13.0",
+    "angular-busy": "~4.1.2",
+    "angular-cookies": "~1.3.16",
+    "angular-http-auth": "~1.2.2",
+    "angular-route": "~1.3.16",
+    "angular-sanitize": "~1.4.0",
+    "angular-translate": "~2.8.1",
+    "angular-translate-loader-static-files": "~2.8.1",
+    "angular-translate-storage-local": "~2.8.1",
+    "angular-ui-codemirror": "~0.3.0",
+    "angular-ui-router": "~0.2.13",
+    "animate.css": "~3.4.0",
+    "autofill-event": "~1.0.*",
+    "bootstrap-sass-official": "~3.3.3",
+    "checklist-model": "~0.2.4",
+    "jshint": "~2.9.0",
+    "ng-clip": "~0.2.6",
+    "ng-table": "~0.5.4",
+    "sprintf": "~1.0.2",
+    "stg-htmlhint": "0.9.12"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.3.16"
+  },
+  "overrides": {
+    "bootstrap-sass-official": {
+      "dependencies": {},
+      "main": []
+    },
+    "jquery": {
+      "main": []
+    },
+    "bootstrap": {
+      "main": []
+    },
+    "angular-bootstrap": {
+      "main": [
+        "ui-bootstrap-tpls.js"
+      ]
+    },
+    "jshint": {
+      "main": [
+        "dist/jshint.js"
+      ]
+    },
+    "codemirror": {
+      "main": [
+        "lib/codemirror.js",
+        "lib/codemirror.css",
+        "mode/xml/xml.js",
+        "mode/javascript/javascript.js",
+        "mode/htmlmixed/htmlmixed.js",
+        "addon/edit/matchbrackets.js",
+        "addon/selection/active-line.js",
+        "addon/display/placeholder.js",
+        "addon/lint/lint.js",
+        "addon/lint/html-lint.js",
+        "addon/lint/lint.css"
+      ]
+    },
+    "stg-htmlhint": {
+      "main": [
+        "lib/htmlhint.js"
+      ]
+    }
+  },
+  "resolutions": {
+    "angular": "1.3.18"
+  }
+}

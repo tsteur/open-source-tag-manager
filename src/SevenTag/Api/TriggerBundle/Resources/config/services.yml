@@ -1,0 +1,46 @@
+imports:
+    - { resource: 'forms.yml' }
+    - { resource: 'trigger_types.yml' }
+
+services:
+    seven_tag.trigger_type.condition_preparator:
+        class: SevenTag\Api\TriggerBundle\TriggerType\ViewPreparator\ConditionViewPreparator
+        arguments:
+            - @seven_tag_variable.repository.variable_repository
+            - @seven_tag_variable.variable_provider
+
+    seven_tag.trigger_type.holder:
+        class: SevenTag\Api\TriggerBundle\TriggerType\Holder\Holder
+
+    seven_tag.listener.condition_update_at_chain_listener:
+        class: SevenTag\Api\TriggerBundle\Listener\ConditionUpdatedAtChainListener
+        tags:
+            - { name: doctrine.event_listener, event: onFlush, method: onFlush }
+
+    seven_tag.listener.trigger_strategy_resolver_listener:
+        class: SevenTag\Api\TriggerBundle\Listener\TriggerStrategyResolverListener
+        tags:
+            - { name: doctrine.event_listener, event: prePersist, method: prePersist }
+
+    seven_tag.repository.trigger_repository:
+        class: Doctrine\ORM\EntityRepository
+        factory_service: doctrine.orm.default_entity_manager
+        factory_method: getRepository
+        arguments: [ SevenTag\Api\TriggerBundle\Entity\Trigger ]
+
+    seven_tag.validator.trigger_type_validator:
+        class: SevenTag\Api\TriggerBundle\Validator\Constraints\TriggerTypeValidator
+        arguments: [@seven_tag.trigger_type.holder]
+        tags:
+            - { name: validator.constraint_validator, alias: trigger_type_validator }
+
+    seven_tag.validator.trigger_strategy_validator:
+        class: SevenTag\Api\TriggerBundle\Validator\Constraints\TriggerStrategyValidator
+        arguments: [@seven_tag.trigger_type.holder]
+        tags:
+            - { name: validator.constraint_validator, alias: trigger_strategy_validator }
+
+    seven_tag.serializer.trigger_is_added_to_synchronous_tag_subscriber:
+        class: SevenTag\Api\TriggerBundle\Serializer\Subscriber\IsAddedToSynchronousTagSubscriber
+        tags:
+            - { name: jms_serializer.event_subscriber }

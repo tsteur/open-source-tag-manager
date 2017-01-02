@@ -1,0 +1,20 @@
+services:
+    seven_tag_container.form_type.container_form_type:
+        class: SevenTag\Api\ContainerBundle\Form\ContainerType
+        tags:
+            - { name: form.type }
+
+    seven_tag_container.form_type.container_websites_type:
+        class: SevenTag\Api\ContainerBundle\Form\ContainerWebsiteType
+        tags:
+            - { name: form.type, alias: seventag_container_container_website_type }
+
+    seven_tag_container.form_type.website_type:
+        class: SevenTag\Api\ContainerBundle\Form\WebsiteType
+        tags:
+            - { name: form.type, alias: seventag_container_website_type }
+
+    seven_tag_container.form_type.container_permissions_type:
+        class: SevenTag\Api\ContainerBundle\Form\ContainerPermissionType
+        tags:
+            - { name: form.type }

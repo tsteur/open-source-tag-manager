@@ -1,0 +1,15 @@
+services:
+    seven_tag_app.versionable.subscriber.accessid_subscriber:
+            class: SevenTag\Api\AppBundle\Versionable\Listener\AccessIdSubscriber
+            tags:
+              - { name: doctrine.event_subscriber }
+
+    seven_tag_app.versionable.subscriber.versionid_subscriber:
+        class: SevenTag\Api\AppBundle\Versionable\Listener\VersionIdSubscriber
+        tags:
+          - { name: doctrine.event_subscriber }
+
+    seven_tag_app.versionable.subscriber.accessible_form:
+        class: SevenTag\Api\AppBundle\Versionable\Listener\AccessibleFormSubscriber
+        arguments:
+          - @doctrine.orm.entity_manager

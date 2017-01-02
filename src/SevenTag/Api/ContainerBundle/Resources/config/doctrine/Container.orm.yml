@@ -1,0 +1,59 @@
+SevenTag\Api\ContainerBundle\Entity\Container:
+    type: entity
+    table: container
+    repositoryClass: SevenTag\Api\ContainerBundle\Entity\ContainerRepository
+    indexes:
+      containerUpdatedAt:
+        columns: [updatedAt]
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        createdBy:
+            targetEntity: SevenTag\Api\UserBundle\Entity\User
+            joinColumn:
+                name: created_by
+                referencedColumnName: id
+                onDelete: CASCADE
+                onUpdate: CASCADE
+    oneToMany:
+        tags:
+            targetEntity: SevenTag\Api\TagBundle\Entity\Tag
+            mappedBy: container
+            cascade: ['remove']
+        triggers:
+            targetEntity: SevenTag\Api\TriggerBundle\Entity\Trigger
+            mappedBy: container
+            cascade: ['remove']
+        variables:
+            targetEntity: SevenTag\Api\VariableBundle\Entity\Variable
+            mappedBy: container
+            cascade: ['remove']
+        websites:
+            targetEntity: SevenTag\Api\ContainerBundle\Entity\ContainerWebsite
+            mappedBy: container
+            cascade: ['all']
+            orphanRemoval: true
+    fields:
+        name:
+            type: string
+            length: 255
+        description:
+            type: text
+            nullable: true
+        delay:
+            type: integer
+        createdAt:
+          type: datetime
+          gedmo:
+            timestampable:
+              on: create
+        updatedAt:
+           type: datetime
+           gedmo:
+             timestampable:
+              on: update
+    lifecycleCallbacks: {  }

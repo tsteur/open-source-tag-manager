@@ -1,0 +1,4 @@
+services:
+#    seven_tag_test.example:
+#        class: SevenTag\Api\Bundle\TestBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

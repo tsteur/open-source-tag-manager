@@ -1,0 +1,20 @@
+#event-details-related-tags {
+    @extend #overview-tag-list;
+
+    i {
+        font-size: 17px;
+        position: absolute;
+    }
+
+    & > table > tbody > tr {
+
+        @include linkenable();
+
+        & > td {
+
+            cursor: pointer;
+
+        }
+
+    }
+}

@@ -1,0 +1,178 @@
+.stg-top {
+    height: 150px;
+    text-align: center;
+    background-color: #2e9354;
+    margin-bottom: 30px;
+}
+
+.stg-logo {
+    margin: 45px auto;
+}
+
+.stg-installer {
+    float: none;
+    width: 77%;
+    min-height: 300px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 18px 30px;
+}
+
+.stg-installer > h4 {
+    margin-bottom: 25px;
+    color: #555;
+}
+
+.stg-installer > h2 {
+    margin-bottom: 10px;
+    color: #555;
+    text-align: center;
+    margin-top: 45px;
+}
+
+.stg-installer > p {
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.stg-step {
+    margin-top: 0px;
+    font-size: 13px;
+    font-weight: thin;
+}
+
+.stg-step > hr {
+    border-color: #ccc;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.stg-step > span {
+    display: inline;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.stg-success {
+    color: #2e9354;
+}
+
+.stg-danger {
+    color: #e74c3c;
+}
+
+.stg-btn-block {
+    float: none;
+    width: 50%;
+}
+
+.stg-step > span.stg-info {
+    color: #666;
+    display: block !important;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.stg-installer > button, .stg-btn-block > button, .stg-installer > a, .stg-btn-block > a, a.submitLink  {
+    margin: 18px 0px;
+    padding: 8px 26px;
+    font-size: 16px;
+}
+
+button.btn-success,
+button.btn-success,
+a.btn-success,
+a.btn-success
+{
+    background-color: #2e9354;
+    margin-bottom: 10px;
+}
+
+button.btn-default,
+button.btn-default,
+a.btn-default,
+a.btn-default
+{
+    background-color: #666;
+    color: white;
+}
+
+button.btn-success:hover,
+button.btn-success:hover,
+a.btn-success:hover,
+a.btn-success:hover
+{
+    text-decoration: none;
+    background-color: #226c3e;
+}
+
+button.btn-default:hover,
+button.btn-default:hover,
+a.btn-default:hover,
+a.btn-default:hover
+{
+    color: white;
+    text-decoration: none;
+    background-color: #4d4d4d;
+}
+
+
+/* DATABASE CONNECTION */
+
+.stg-field {
+    font-size: 12px;
+}
+
+.stg-field > input {
+    height: 40px;
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 1.42857;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.stg-notification {
+    float: none;
+    width: 77%;
+    border-radius: 3px;
+    padding: 12px 20px;
+    font-size: 12px;
+    margin-bottom: 30px;
+}
+
+.stg-notification-success {
+    background-color: white;
+    color: #2e9354;
+    border: 1px solid #2e9354;
+}
+
+.stg-notification-danger {
+    background-color: #e74c3c;
+    color: white;
+    border: 1px solid #e74c3c;
+}
+
+.parameters-file {
+    position: relative;
+}
+
+.parameters-file textarea {
+    max-width: 100%;
+}
+
+.btn-copyToClipboard {
+    position: absolute;
+    display: none;
+    top: 7px;
+    right: 28px;
+    padding: 7px 19px;
+    background-color: #ccc;
+    color: #4d4d4d;
+    border-radius: 3px;
+}
+
+.parameters-file:hover .btn-copyToClipboard {
+    display: block;
+}

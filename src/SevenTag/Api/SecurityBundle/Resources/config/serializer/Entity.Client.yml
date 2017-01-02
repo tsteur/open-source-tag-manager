@@ -1,0 +1,9 @@
+SevenTag\Api\SecurityBundle\Entity\Client:
+    exclusion_policy: all
+    properties:
+        createdAt:
+            expose: true
+            groups: [integration, integrations]
+        updatedAt:
+            expose: true
+            groups: [integration, integrations]

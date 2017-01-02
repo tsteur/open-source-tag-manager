@@ -1,0 +1,39 @@
+<section id="overview-tag-list" class="animated fadeIn">
+    <table>
+        <thead>
+            <tr>
+                <th class="size-55"><%= __('Tag name') %></th>
+                <th class="size-35"><%= __('Fired') %></th>
+                <th class="size-10"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-if="view.tags === undefined">
+                <td colspan="3" class="information">
+                    <%= __('Container has no tags') %>
+                </td>
+            </tr>
+            <tr
+                ng-repeat="tag in view.tags"
+                ng-class="{'status-not-fired': tag.firedCount === 0, 'status-disabled': tag.disableInDebugMode}"
+                ng-click="$state.go('overview.tag-details', {id: tag.id})"
+            >
+                <td id="tag-name-{{$index}}">{{ tag.name | limitTo : 22 }}{{ tag.name.length > 22 ? '...' : '' }}</td>
+                <td id="tag-fired-count-{{$index}}" class="overview-tag-list-fired-count">
+                    <div class="status-pill status-pill-notifiable" countable model="tag.firedCount" count-class="fire">
+                        <span ng-if="tag.isFiredMoreThenOnce()">{{ tag.firedCount }} times</span>
+                        <span ng-if="tag.isFiredOnce()">{{ tag.firedCount }} time</span>
+                        <span ng-if="(!tag.isFired() && !tag.isRespectVisitorsPrivacy(view.doNotTrackEnabled)) && !tag.isDisabled()"><%= __('Not fired') %></span>
+                        <span ng-if="tag.isRespectVisitorsPrivacy(view.doNotTrackEnabled) && !tag.isDisabled()"><%= __('DNT') %></span>
+                        <span ng-if="tag.isDisabled()"><%= __('Disabled') %></span>
+                    </div>
+                    <div class="status-pill-changed-notifier">
+                        <span>+1</span>
+                    </div
+                </td>
+                <td class="size-10"><i class="icon-arrow-right"></i></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
