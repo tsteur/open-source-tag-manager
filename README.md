@@ -20,13 +20,13 @@
 
 # How to install 7tag?
 
-- You can find installation instructions at: [7tag.org/docs/installation](https://7tag.org/docs/installation/).
+- You can find installation instructions at: [https://web.archive.org/web/20160803173643/https://7tag.org/docs/installation/](https://web.archive.org/web/20160803173643/https://7tag.org/docs/installation/).
 
 - There is also another way of building project from scratch for advanced users: [instructions](doc/INSTALLATION.md).
 
 ## Documentation
 
-Documentation is available at [7tag.org/docs](https://7tag.org/docs/introduction/).
+Documentation is available at [https://web.archive.org/web/20160803173703/https://7tag.org/docs/introduction/](https://web.archive.org/web/20160803173703/https://7tag.org/docs/introduction/).
 
 ## Technology stack
 
