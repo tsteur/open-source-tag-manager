@@ -1,1 +1,0 @@
-(function(stg){stg=window.sevenTag=stg||{};stg.tagTree=##tagTree##;stg.debugOptions=##debugOptions##;stg.variables=##variables##;stg.configuration=##containerJsConfig##;}(window.sevenTag));

@@ -1,7 +1,0 @@
-services:
-    seven_tag_tag.repository.tag_repository:
-        class: SevenTag\Api\TagBundle\Entity\TagRepository
-        factory_service: doctrine.orm.default_entity_manager
-        factory_method: getRepository
-        arguments:
-            - SevenTag\Api\TagBundle\Entity\Tag

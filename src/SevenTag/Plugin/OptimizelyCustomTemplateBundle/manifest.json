@@ -1,8 +1,0 @@
-{
-  "name": "seventag_plugin_optimizely_custom_template",
-  "version": "1.0.0",
-  "assets-js": [
-    {"path": "js/stgOptimizely.js", "target": "bottom", "externalPath": false}
-  ],
-  "containerjs-configs": []
-}

@@ -1,7 +1,0 @@
-containers_websites:
-    resource: "@SevenTagContainerBundle/Controller/ContainersWebsitesRestController.php"
-    type:     rest
-
-containers:
-    resource: "@SevenTagContainerBundle/Controller/ContainersRestController.php"
-    type:     rest

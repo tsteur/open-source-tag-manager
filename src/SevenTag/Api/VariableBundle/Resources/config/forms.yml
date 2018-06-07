@@ -1,5 +1,0 @@
-services:
-    seven_tag_variable.form_type.variable_form_type:
-        class: SevenTag\Api\VariableBundle\Form\Type\VariableType
-        tags:
-            - { name: form.type }

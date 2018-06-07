@@ -1,9 +1,0 @@
-SevenTag\Api\AppBundle\Rest\View\ListView:
-  exclusion_policy: all
-  properties:
-    data:
-      expose: true
-      groups: [list_view]
-    total:
-      expose: true
-      groups: [list_view]

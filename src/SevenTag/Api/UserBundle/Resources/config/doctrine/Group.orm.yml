@@ -1,8 +1,0 @@
-SevenTag\Api\UserBundle\Entity\Group:
-    type:  entity
-    table: `group`
-    id:
-        id:
-            type: integer
-            generator:
-                strategy: AUTO

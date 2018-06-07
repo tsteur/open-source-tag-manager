@@ -1,6 +1,0 @@
-services:
-    seven_tag_tag.form_type.tag_form_type:
-        class: SevenTag\Api\TagBundle\Form\TagType
-        arguments: [@seven_tag_tag.template_holder]
-        tags:
-            - { name: form.type }

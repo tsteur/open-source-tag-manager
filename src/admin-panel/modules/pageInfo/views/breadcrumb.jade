@@ -1,7 +1,0 @@
-ol#breadcrumbs-navigation.breadcrumb(ng-if="!$state.includes('container')")
-    li#breadcrumbs-home(ng-if="!$state.includes('container')")
-        a(href, ui-sref="container", ng-show="breadcrumbCtrl.breadcrumb.length")
-            i.icon-home
-        a(ng-hide="breadcrumbCtrl.breadcrumb.length").active  Loading ...
-    li(ng-repeat="breadcrumb in breadcrumbCtrl.breadcrumb", ng-class="{'breadcrumb-bold': !$last}")
-        a(title="{{ breadcrumb.name }}", ng-click="breadcrumb.state !== undefined ? breadcrumbCtrl.stateGo(breadcrumb) : ''").active {{ breadcrumb.name | limitTo : 30 }}{{breadcrumb.name.length > 30 ? '...' : ''}}

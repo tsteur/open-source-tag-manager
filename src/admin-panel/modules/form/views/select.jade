@@ -1,7 +1,0 @@
-.dropdown(dropdown, on-toggle="toggled(open)", id="{{ id }}-dropdown")
-    button.btn.btn-select.dropdown-toggle(dropdown-toggle aria-expanded="true") {{selectCtrl.selected}}
-        strong.pull-right
-            i.icon-arrow-down
-    ul.dropdown-menu(role="menu")
-        li(ng-repeat="element in selectCtrl.options" id="{{ id }}-{{ $index }}-options" ng-if="$index" ng-click="selectCtrl.select(element)")
-            | {{element.text}}

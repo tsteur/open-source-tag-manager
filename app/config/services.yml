@@ -1,5 +1,0 @@
-parameters:
-  seventag_domain: ~
-  mailer_sender: example@example.com
-services:
-

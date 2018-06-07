@@ -1,9 +1,0 @@
-types:
-    url:
-        name: 'Url'
-        collectorName: 'url'
-        helper: 'To configure you need to set one of property of this object like hash or protocol'
-    cookie:
-        name: 'Cookie'
-        collectorName: 'cookie'
-        helper: 'To configure you need to put cookie name and as a value you will have value of that cookie'

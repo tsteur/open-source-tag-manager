@@ -1,8 +1,0 @@
-{
-  "name": "seventag_plugin_click_tale_custom_template",
-  "version": "1.0.0",
-  "assets-js": [
-    {"path": "js/stgClickTale.js", "target": "bottom", "externalPath": false}
-  ],
-  "containerjs-configs": []
-}

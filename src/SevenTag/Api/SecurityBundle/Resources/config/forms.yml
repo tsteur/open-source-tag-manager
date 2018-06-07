@@ -1,9 +1,0 @@
-services:
-    seven_tag_security.form_type.create_integration_form_type:
-        class: SevenTag\Api\SecurityBundle\Form\Type\CreateIntegrationType
-        tags:
-            - { name: form.type }
-    seven_tag_security.form_type.edit_integration_form_type:
-        class: SevenTag\Api\SecurityBundle\Form\Type\EditIntegrationType
-        tags:
-            - { name: form.type }
